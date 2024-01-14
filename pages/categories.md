@@ -1,8 +1,8 @@
 ---
 layout: categories
-title: Categories
-description: 哈哈，你找到了我的文章基因库
-keywords: 分类
+title: 分类 / Categories
+description: 分分类
+keywords: Categories
 comments: false
 menu: 分类
 permalink: /categories/
