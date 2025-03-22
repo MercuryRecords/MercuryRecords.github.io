@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="操作系统 Lab 1 文档">
+<meta name="keywords" content="OS"><title>OS | Lab 1 文档</title>
+
+<link rel='canonical' href='http://localhost:1313/p/os-lab-1-%E6%96%87%E6%A1%A3/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="OS | Lab 1 文档">
+<meta property='og:description' content="操作系统 Lab 1 文档">
+<meta property='og:url' content='http://localhost:1313/p/os-lab-1-%E6%96%87%E6%A1%A3/'>
+<meta property='og:site_name' content='v1tamin&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-08-01T13:00:00&#43;08:00'/><meta property='article:modified_time' content='2024-08-01T13:00:00&#43;08:00'/>
+<meta name="twitter:title" content="OS | Lab 1 文档">
+<meta name="twitter:description" content="操作系统 Lab 1 文档">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">v1tamin&#39;s Blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/MercuryRecords'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一思考题">一、思考题</a>
+      <ol>
+        <li><a href="#thinking-11">Thinking 1.1</a></li>
+        <li><a href="#thinking-12">Thinking 1.2</a></li>
+        <li><a href="#thinking-13">Thinking 1.3</a></li>
+      </ol>
+    </li>
+    <li><a href="#二难点分析">二、难点分析</a>
+      <ol>
+        <li><a href="#指导书">指导书</a></li>
+        <li><a href="#线下-exercise11">线下-Exercise1.1</a></li>
+        <li><a href="#线下-exercise12">线下-Exercise1.2</a></li>
+        <li><a href="#线下-exercise13">线下-Exercise1.3</a></li>
+        <li><a href="#线下-exercise14">线下-Exercise1.4</a></li>
+        <li><a href="#线上-lab1-exam">线上-lab1-exam</a></li>
+        <li><a href="#线上-lab1-extra">线上-lab1-extra</a></li>
+      </ol>
+    </li>
+    <li><a href="#三实验体会">三、实验体会</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/os/" >
+                OS
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/os-lab-1-%E6%96%87%E6%A1%A3/">OS | Lab 1 文档</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            操作系统 Lab 1 文档
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 01, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="lab-1">Lab 1
+</h1><h2 id="一思考题">一、思考题
+</h2><h3 id="thinking-11">Thinking 1.1
+</h3><blockquote>
+<p>请阅读 附录中的编译链接详解，尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS 交叉编译工具链（带有 mips-linux-gnu-前缀），重复其中的编译和解析过程，观察相应的结果，并解释其中向 objdump 传入的参数的含义。</p></blockquote>
+<ul>
+<li>重复编译和解析过程</li>
+</ul>
+<p>使用原生x86工具链：基本同指导书，除了发现在实验环境中调用函数的指令为 <code>call</code> 而非 <code>callq</code>，似乎是由于环境的位数差异引起的。</p>
+<ul>
+<li>使用mips交叉编译工具链：分别使用<code>mips-linux-gnu-gcc -c hello.c</code> （左）和 <code>mips-linux-gnu-gcc hello.c</code> （右）并进行反汇编 <code>mips-linux-gnu-objdump -DS ...</code>，结果对比如下图：</li>
+</ul>
+<div align=center>
+<img src="/images/posts/OS/lab1/t1.1.png"/>
+</div>
+<p>主要有两个差别，一是<code>main</code> 的地址发生了改变，链接后的程序有一个具体的起始地址，而不链接的情况下地址是相对的；二是一些寄存器的值发生了变化，特别是存储函数地址的 <code>t9</code> 寄存器，链接与否决定其能否存储一个正确的函数地址而非默认值。</p>
+<ul>
+<li>解释 <code>objdump -DS</code> 中的参数含义</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">objdump --help
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  -D, --disassemble-all    Display assembler contents of all sections // 显示所有节的汇编程序内容
+</span></span><span class="line"><span class="cl">      --disassemble=&lt;sym&gt;  Display assembler contents from &lt;sym&gt;
+</span></span><span class="line"><span class="cl">  -S, --source             Intermix source code with disassembly // 同时输出源码
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="thinking-12">Thinking 1.2
+</h3><blockquote>
+<ul>
+<li>尝试使用我们编写的 readelf 程序，解析之前在 target 目录下生成的内核 ELF 文件。</li>
+<li>也许你会发现我们编写的 readelf 程序是不能解析 readelf 文件本身的，而我们刚才介绍的系统工具 readelf 则可以解析，这是为什么呢？（提示：尝试使用 readelf -h，并阅读 tools/readelf 目录下的 Makefile，观察 readelf 与 hello 的不同）</li>
+</ul></blockquote>
+<ul>
+<li>进行解析：</li>
+</ul>
+<div align=center>
+<img src="/images/posts/OS/lab1/t1.2-read.png"/>
+</div>
+<ul>
+<li>运行 <code>./readelf readelf</code> 无输出；运行 <code>readelf -h readelf</code>:</li>
+</ul>
+<div align=center>
+<img src="/images/posts/OS/lab1/t1.2-self.png"/>
+</div>
+<p>这是为什么呢？从 Makefile 中可以看出有几处不同：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">readelf: main.o readelf.o
+</span></span><span class="line"><span class="cl">        $(CC) $^ -o $@
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">hello: hello.c
+</span></span><span class="line"><span class="cl">        $(CC) $^ -o $@ -m32 -static -g
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>具体来说，hello的编译指令中包含了-m32、-static和-g三个参数：</p>
+<ul>
+<li>-m32: 不管环境是32位还是64位，都编译生成32位的可执行文件。</li>
+<li>-static: 链接时使用静态链接，将所有需要的库包含在最终的可执行文件中。</li>
+<li>-g: 编译时包含调试信息。</li>
+</ul>
+<p>而且我们编写的 readelf 程序可以解析 hello 文件，对比 <code>readelf -h readelf</code> 可以发现 readelf 本身是64位的。重新回到 readelf.c 中可以发现各种数据结构只支持解析 32 的可执行文件的，问题也就迎刃而解了。</p>
+<h3 id="thinking-13">Thinking 1.3
+</h3><blockquote>
+<p>在理论课上我们了解到，MIPS 体系结构上电时，启动入口地址为 0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？（提示：思考实验中启动过程的两阶段分别由谁执行。）</p></blockquote>
+<p>MIPS 体系结构上电时，CPU从预定义的启动入口地址开始执行 bootloader，其会将内核镜像从存储器读到 RAM 中，并为内核设置启动参数，最后将 CPU 指令寄存器的内容设置为内核入口函数的地址，即将控制权转交给操作系统内核。因此启动入口地址不是放在上电启动地址的，需要经过 bootloader 的一系列引导以跳转到内存中的入口。而 QEMU 已经提供了 bootloader 的引导（启动）功能，而且支持加载 ELF 格式内核，所以启动流程被简化为加载内核到内存，之后跳转到内核的入口，启动就完成了。</p>
+<h2 id="二难点分析">二、难点分析
+</h2><h3 id="指导书">指导书
+</h3><ul>
+<li>理解 Makefile 语法</li>
+<li>理解 ELF 文件结构，包括三个重要的节 <code>.text</code>、<code>.data</code>、<code>.bss</code></li>
+<li><code>printk</code> 函数过程</li>
+</ul>
+<h3 id="线下-exercise11">线下-Exercise1.1
+</h3><p>理解相关文件内容，在 <code>readelf.c</code> 中进行两处填空，需要理解 <code>Elf32_Ehdr</code>、<code>Elf32_Shdr</code> 两个<strong>结构体中成员的意义</strong>。</p>
+<ul>
+<li>在 ELF 头中，提供了节头表的入口偏移，假设 binary 为 ELF 的文件头地址，shoff为入口偏移，那么 binary + shoff 即为节头表第一项的地址。</li>
+<li>遍历每一个节头的方法是：先读取节头的大小，随后以指向第一个节头的指针（即节头表第一项的地址）为基地址，不断累加得到每个节头的地址。</li>
+</ul>
+<h3 id="线下-exercise12">线下-Exercise1.2
+</h3><p>将内核调整到正确的位置上：根据内存布局图设置内核位置即可。</p>
+<h3 id="线下-exercise13">线下-Exercise1.3
+</h3><p>设置栈指针，注意<strong>栈的增长方向</strong>：根据内存布局图设置栈指针即可；
+跳转到 <code>mips_init</code>: <code>j mips_init</code></p>
+<h3 id="线下-exercise14">线下-Exercise1.4
+</h3><p>补全 <code>vprintfmt()</code>：根据功能和代码注释填空，还好可以参考上下文和注释，无法想象没有注释怎么写出来，主要是很难一开始就对代码有一个清晰的理解。考验<strong>阅读代码的能力</strong>。</p>
+<h3 id="线上-lab1-exam">线上-lab1-exam
+</h3><p>实现一个自定义的格式化字符串&rsquo;%P&rsquo;：从当前参数位往后读取两个参数，输出三个参数，第三个参数由前两个参数计算而来。注意格式串依然为 <code>%[flags][width][length]&lt;specifier&gt;</code>，仍然需要考虑 <code>P</code> 前可能出现的格式要求，不过在写 <code>print_num</code> 的时候应该会考虑到一部分，注意 <code>long_flag</code> 和 <code>neg_flag</code> 即可。</p>
+<h3 id="线上-lab1-extra">线上-lab1-extra
+</h3><p>实现 <code>scanf</code>，实际上要求对 <code>printk</code> 的原理充分理解，包括对变长参数表相关的宏和变量类型的理解，对 <code>in/out</code> 辅助函数的理解，对指针的使用等。</p>
+<h2 id="三实验体会">三、实验体会
+</h2><p>纸上得来终觉浅，然而纸上也没那么好得来。感觉大概熟悉节奏了，需要</p>
+<ol>
+<li>粗看把握整体概念和层次</li>
+<li>尝试写代码</li>
+<li>再看指导书，查阅相关资料</li>
+<li>重复步骤2、3，直到真正弄懂一次lab</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/os-lab-6-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 6 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-5-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 5 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-4-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 4 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-3-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 3 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-2-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 2 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Taichuan Li
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.d9dec133efdf60a3628a485d38b69336769aaba023a8725f406793e47c75858f.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

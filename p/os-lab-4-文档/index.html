@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="操作系统 Lab 4 文档">
+<meta name="keywords" content="OS"><title>OS | Lab 4 文档</title>
+
+<link rel='canonical' href='http://localhost:1313/p/os-lab-4-%E6%96%87%E6%A1%A3/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="OS | Lab 4 文档">
+<meta property='og:description' content="操作系统 Lab 4 文档">
+<meta property='og:url' content='http://localhost:1313/p/os-lab-4-%E6%96%87%E6%A1%A3/'>
+<meta property='og:site_name' content='v1tamin&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-08-01T16:00:00&#43;08:00'/><meta property='article:modified_time' content='2024-08-01T16:00:00&#43;08:00'/>
+<meta name="twitter:title" content="OS | Lab 4 文档">
+<meta name="twitter:description" content="操作系统 Lab 4 文档">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_f509edb42ecc0ebd.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">v1tamin&#39;s Blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/MercuryRecords'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一思考题">一、思考题</a>
+      <ol>
+        <li><a href="#thinking-41">Thinking 4.1</a></li>
+        <li><a href="#thinking-42">Thinking 4.2</a></li>
+        <li><a href="#thinking-43">Thinking 4.3</a></li>
+        <li><a href="#thinking-44">Thinking 4.4</a></li>
+        <li><a href="#thinking-45">Thinking 4.5</a></li>
+        <li><a href="#thinking-46">Thinking 4.6</a>
+          <ol>
+            <li><a href="#1">1.</a></li>
+            <li><a href="#2">2.</a></li>
+            <li><a href="#3">3.</a></li>
+            <li><a href="#4">4.</a></li>
+          </ol>
+        </li>
+        <li><a href="#thinking-47">Thinking 4.7</a></li>
+        <li><a href="#thinking-48">Thinking 4.8</a></li>
+        <li><a href="#thinking-49">Thinking 4.9</a></li>
+      </ol>
+    </li>
+    <li><a href="#二难点分析">二、难点分析</a>
+      <ol>
+        <li><a href="#如何添加一个系统调用">如何添加一个系统调用</a>
+          <ol>
+            <li><a href="#步骤">步骤</a></li>
+          </ol>
+        </li>
+        <li><a href="#如何获取env">如何获取env</a></li>
+        <li><a href="#fork">fork</a></li>
+      </ol>
+    </li>
+    <li><a href="#三实验体会">三、实验体会</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/os/" >
+                OS
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/os-lab-4-%E6%96%87%E6%A1%A3/">OS | Lab 4 文档</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            操作系统 Lab 4 文档
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 01, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="lab-4">Lab 4
+</h1><h2 id="一思考题">一、思考题
+</h2><h3 id="thinking-41">Thinking 4.1
+</h3><blockquote>
+<ul>
+<li>内核在保存现场的时候是如何避免破坏通用寄存器的？</li>
+<li>系统陷入内核调用后可以直接从当时的 <code>$a0-$a3</code> 参数寄存器中得到用户调用 <code>msyscall</code> 留下的信息吗？</li>
+<li>我们是怎么做到让 <code>sys</code> 开头的函数“认为”我们提供了和用户调用 <code>msyscall</code> 时同样的参数的？</li>
+<li>内核处理系统调用的过程对 <code>Trapframe</code> 做了哪些更改？这种修改对应的用户态的变化是什么？</li>
+</ul></blockquote>
+<ol>
+<li>在宏 <code>SAVE_ALL</code> 中，指令 <code>move k0, sp</code> 将 sp 的值复制到 k0 寄存器、然后使用 <code>sw</code> 指令将其保存到栈帧中，然后继续仅使用该寄存器把其他通用寄存器的值保存到栈帧中，保证了通用寄存器的值不被修改（<code>k0</code> 不是通用寄存器，仅供操作系统使用）。</li>
+<li>可以。在 MIPS 寄存器使用规范中指定了寄存器 <code>$a0-$a3</code> 用于存放函数调用的前四个参数，而且系统陷入内核调用前后寄存器内容不会发生改变，所以可以直接得到信息。</li>
+<li>在函数 <code>do_syscall</code> 中，函数从栈帧中获取了函数调用的参数，并找到对应函数进行了函数调用，保证了函数获得的参数值是用户调用 <code>msyscall</code> 时保存到栈帧中的参数值。</li>
+<li>处理过程中使得栈帧中 <code>epc</code> 的值自增 4，并且将 <code>sys_*</code> 函数的返回值存入到栈帧的 <code>$v0</code> 寄存器中，这样的修改使得系统返回用户态时，用户程序能够从正确的位置继续运行，并且能从 <code>$v0</code> 寄存器中获得系统调用的返回值。</li>
+</ol>
+<h3 id="thinking-42">Thinking 4.2
+</h3><blockquote>
+<p>思考 <code>envid2env</code> 函数: 为什么 <code>envid2env</code> 中需要判断 <code>e-&gt;env_id != envid</code> 的情况？如果没有这步判断会发生什么情况？</p></blockquote>
+<p>在这一步之前使用了 <code>e = &amp;envs[ENVX(envid)];</code> 来获得进程控制块，仅保证了 <code>e-&gt;env_id</code> 与 <code>envid</code> 在低十位上相同，但没有保证完全相同，故它们的地址空间标识符（ASID）可能不同。当 <code>envs</code> 中的进程控制块被替换，其新的 <code>envid</code> 的后十位不变，但是 <code>ASID</code> 字段会改变，所以需要进一步判断获得的 <code>e</code> 是不是我们想要的进程控制块。</p>
+<h3 id="thinking-43">Thinking 4.3
+</h3><blockquote>
+<p>思考下面的问题，并对这个问题谈谈你的理解：请回顾 <code>kern/env.c</code> 文件中 <code>mkenvid()</code> 函数的实现，该函数不会返回 0，请结合系统调用和 <code>IPC</code> 部分的实现与 <code>envid2env()</code> 函数的行为进行解释。</p></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">u_int</span> <span class="nf">mkenvid</span><span class="p">(</span><span class="k">struct</span> <span class="n">Env</span> <span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">static</span> <span class="n">u_int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="p">((</span><span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">LOG2NENV</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">envs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>函数使用 <code>static</code> 声明要分配的 <code>asid</code> 段的内容，使得返回值 <code>envid</code> 的 <code>asid</code> 段递增，且保证了返回值不为 0。0 作为一个保留值，在 <code>envid</code> 的判断中有如下的作用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">envid2env</span><span class="p">(</span><span class="n">u_int</span> <span class="n">envid</span><span class="p">,</span> <span class="k">struct</span> <span class="n">Env</span> <span class="o">**</span><span class="n">penv</span><span class="p">,</span> <span class="kt">int</span> <span class="n">checkperm</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">Env</span> <span class="o">*</span><span class="n">e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="cm">/* Step 1: Assign value to &#39;e&#39; using &#39;envid&#39;. */</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/* Hint:
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 *   If envid is zero, set &#39;penv&#39; to &#39;curenv&#39; and return 0.
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 *   You may want to use &#39;ENVX&#39;.
+</span></span></span><span class="line"><span class="cl"><span class="cm">	 */</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/* Exercise 4.3: Your code here. (1/2) */</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">envid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">e</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">envs</span><span class="p">[</span><span class="nf">ENVX</span><span class="p">(</span><span class="n">envid</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="o">*</span><span class="n">penv</span> <span class="o">=</span> <span class="n">curenv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>当 <code>envid</code> 的值是 0 时，函数会使参数 <code>penv</code> 指向当前进程控制块，供一些系统调用函数访问当前进程的进程控制块。</p>
+<h3 id="thinking-44">Thinking 4.4
+</h3><blockquote>
+<p>关于 fork 函数的两个返回值，下面说法正确的是：
+A、fork 在父进程中被调用两次，产生两个返回值
+B、fork 在两个进程中分别被调用一次，产生两个不同的返回值
+C、fork 只在父进程中被调用了一次，在两个进程中各产生一个返回值
+D、fork 只在子进程中被调用了一次，在两个进程中各产生一个返回值</p></blockquote>
+<p>选 C。</p>
+<h3 id="thinking-45">Thinking 4.5
+</h3><blockquote>
+<p>我们并不应该对所有的用户空间页都使用 <code>duppage</code> 进行映射。那么究竟哪些用户空间页应该映射，哪些不应该呢？请结合 <code>kern/env.c</code> 中 <code>env_init</code> 函数进行的页面映射、<code>include/mmu.h</code> 里的内存布局图以及本章的后续描述进行思考。</p></blockquote>
+<p>从 <code>ULIM</code> 开始往下看， <code>ULIM</code> 到 <code>UVPT</code> 是进程自己的页表， <code>UVPT</code> 到 <code>UTOP</code> 是所有进程共享的只读空间，这些部分存储内核相关的页表信息，在 <code>env_alloc()</code> 函数中被拷贝到进程页表中、不需要进行映射（Thinking 3.1）；<code>UTOP</code> 也就是 <code>UXSTACKTOP</code> ，开始往下到 <code>USTACKTOP</code> 则是异常处理栈和无效内存部分，不需要父子进程进行共享，所以也不需要映射。最终需要映射的页面只存在于 <code>USTACKTOP</code> 之下。</p>
+<h3 id="thinking-46">Thinking 4.6
+</h3><blockquote>
+<p>在遍历地址空间存取页表项时你需要使用到 <code>vpd</code> 和 <code>vpt</code> 这两个指针，请参考 <code>user/include/lib.h</code> 中的相关定义，思考并回答这几个问题：</p>
+<ul>
+<li>vpt 和 vpd 的作用是什么？怎样使用它们？</li>
+<li>从实现的角度谈一下为什么进程能够通过这种方式来存取自身的页表？</li>
+<li>它们是如何体现自映射设计的？</li>
+<li>进程能够通过这种方式来修改自己的页表项吗？</li>
+</ul></blockquote>
+<h4 id="1">1.
+</h4><p><code>vpt</code> 和 <code>vpd</code> 分别是指向用户页表和用户页目录的指针，用来访问用户页表和页目录。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define vpt ((const volatile Pte *)UVPT)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define vpd ((const volatile Pde *)(UVPT + (PDX(UVPT) &lt;&lt; PGSHIFT)))
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="2">2.
+</h4><p>对于一个虚拟地址 <code>va</code>，要获取对应的<strong>页表项</strong>，应当使用 <code>(*vpt) + (va &gt;&gt; 12)</code> == <code>vpd[va &gt;&gt; 12]</code> == <code>vpt[VPN(va)]</code></p>
+<p>对于一个虚拟地址 <code>va</code>，要获取对应的<strong>页目录项</strong>，应当使用 <code>(*vpd) + (va &gt;&gt; 22)</code> == <code>vpd[va &gt;&gt; 22]</code></p>
+<p>所以可以通过 <code>vpt</code> 和 <code>vpd</code> 直接访问用户进程的页表和页目录项。</p>
+<h4 id="3">3.
+</h4><p>由 <code>vpd</code> 的定义可以看出页目录基地址在 <code>UVPT</code> 和 <code>UVPT + PDMAP</code> 之间，即页目录映射到了某一个页表的位置，在页目录中一定有一个页表项映射到了页目录本身，即实现了自映射。</p>
+<h4 id="4">4.
+</h4><p>不能，页表由内核态程序进行维护，用户态下进程只能对页表项进行访问而不能修改。</p>
+<h3 id="thinking-47">Thinking 4.7
+</h3><blockquote>
+<p>在 <code>do_tlb_mod</code> 函数中，你可能注意到了一个向异常处理栈复制 <code>Trapframe</code> 运行现场的过程，请思考并回答这几个问题：</p>
+<ul>
+<li>这里实现了一个支持类似于“异常重入”的机制，而在什么时候会出现这种“异常重入”？</li>
+<li>内核为什么需要将异常的现场 <code>Trapframe</code> 复制到用户空间？</li>
+</ul></blockquote>
+<ol>
+<li>出现异常重入：用户程序尝试写 <code>COW</code> 页的时候会发生异常重入。</li>
+<li>处理 <code>COW</code> 页触发的页写入异常时，<code>do_tlb_mod()</code> 函数将 <code>epc</code> 改为了用户态的异常处理函数，退出内核中断后系统跳转到 <code>epc</code> 所指的用户态的异常处理函数，在用户态处理完毕后仍在用户态恢复现场，所以需要内核态保存的现场来指导进行恢复。</li>
+</ol>
+<h3 id="thinking-48">Thinking 4.8
+</h3><blockquote>
+<p>在用户态处理页写入异常，相比于在内核态处理有什么优势？</p></blockquote>
+<p>按照微内核的设计理念，<code>MOS</code> 操作系统将处理页写入异常的功能放在了用户态。这样的实现使得：</p>
+<ol>
+<li>内核更加精简，而且要修改页写入异常的处理方法更加灵活，可以模块化地更换处理页写入异常地程序。</li>
+<li>提升了安全性，即使用户态的异常处理代码出现问题，也不会影响到内核的稳定性。</li>
+<li>具体到这个处理代码，它其中含有大量页面拷贝的工作，在用户态进行实现可以解放内核的资源；同时用户态下进行新页面的分配映射更加灵活方便。</li>
+</ol>
+<h3 id="thinking-49">Thinking 4.9
+</h3><blockquote>
+<p>请思考并回答以下几个问题：</p>
+<ul>
+<li>为什么需要将 <code>syscall_set_tlb_mod_entry</code> 的调用放置在 <code>syscall_exofork</code> 之前？</li>
+<li>如果放置在写时复制保护机制完成之后会有怎样的效果？</li>
+</ul></blockquote>
+<ul>
+<li><code>syscall_exofork()</code> 执行完成后子进程需要修改 <code>env</code> 指针，涉及对 <code>COW</code> 页面的修改、触发 <code>COW</code> 写入异常，而此异常处理机制依赖 <code>syscall_set_tlb_mod_entry</code> 的执行，所以此顺序是固定的。</li>
+<li>父进程调用 <code>COW</code> 机制可能会触发缺页异常，而此时尚未设置异常处理机制，无法按照预期处理。</li>
+</ul>
+<h2 id="二难点分析">二、难点分析
+</h2><h3 id="如何添加一个系统调用">如何添加一个系统调用
+</h3><ol>
+<li>用户进程调用函数 <code>void user_lib_func(u_int whom, u_int val, const void *srcva, u_int perm)</code></li>
+<li>系统调用 <code>void syscall_func(u_int envid, u_int value, const void *srcva, u_int perm)</code></li>
+</ol>
+<h4 id="步骤">步骤
+</h4><ul>
+<li><code>user/include/lib.h</code>: 函数声明 * 2</li>
+<li><code>user/lib/syscall_lib.c</code>: 实现 <code>void syscall_func(u_int envid, u_int value, const void *srcva, u_int perm)</code>，也就是使用 <code>msyscall</code></li>
+<li><code>user/lib/目标文件.c</code>: 实现 <code>void user_lib_func(u_int whom, u_int val, const void *srcva, u_int perm)</code>，如 <code>debugf.c</code> 中， <code>debug_flush</code> 调用了 <code>syscall_print_cons</code></li>
+<li><code>include/syscall.h</code>: 更新枚举内容（例如 <code>SYS_func</code> ），注意在 <code>MAX_SYSNO</code> 之前。</li>
+<li><code>kern/syscall_all.c</code>: 1. 实现 <code>sys_func</code> ；2. 更新 <code>syscall_table</code></li>
+</ul>
+<p><code>int sys_func(u_int envid, u_int value, u_int srcva, u_int perm)</code></p>
+<h3 id="如何获取env">如何获取env
+</h3><ol>
+<li>同 <code>envid2env</code>：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">Env</span> <span class="o">*</span><span class="n">e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">envid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">e</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">envs</span><span class="p">[</span><span class="nf">ENVX</span><span class="p">(</span><span class="n">envid</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>使用 <code>extern</code> 关键字声明 <code>envs</code> 数组，利用下标获取：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// kern/syscall_all.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">extern</span> <span class="k">struct</span> <span class="n">Env</span> <span class="n">envs</span><span class="p">[</span><span class="n">NENV</span><span class="p">];</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="fork">fork
+</h3><p>让进程创建进程的方式，其特点在于，在新的进程中 <code>fork()</code> 的返回值为0，在父进程中返回值则为子进程的 <code>env_id</code>，这一特点也使得父子进程可以执行不同的后续逻辑并进行通讯操作。课下实验的后半部分内容也围绕着这个函数展开。</p>
+<h2 id="三实验体会">三、实验体会
+</h2><p>这次lab的内容比较多，实现也较为复杂，光是课下部分就耗费了不少精力。在第一次课上限时测试前，我重点思考并理解了系统调用有关的部分，为我的满分通过打下了良好的基础。然而第二次课上测试虽然感觉准备的也算充分，却因故爆零，让我倍感遗憾。虽然我已经写对了绝大部分的代码，但对 <code>sys_set_env_status</code> 中调用 <code>envid2env</code> 部分的处理逻辑早已忘却，导致这个地方如何传参（<code>envid</code> 应该传入 0）在课上始终没有发现；并且似乎还受到了跳板机特定的影响，总之爆0了。希望后面两个lab能更加细心，常常回顾，争取实现得更好。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/os-lab-6-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 6 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-5-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 5 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-3-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 3 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-2-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 2 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/os-lab-1-%E6%96%87%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OS | Lab 1 文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Taichuan Li
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.d9dec133efdf60a3628a485d38b69336769aaba023a8725f406793e47c75858f.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

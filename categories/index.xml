@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Categories on v1tamin&#39;s Blog</title>
+        <link>http://localhost:1313/categories/</link>
+        <description>Recent content in Categories on v1tamin&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Taichuan Li</copyright>
+        <lastBuildDate>Wed, 04 Sep 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>OO</title>
+        <link>http://localhost:1313/categories/oo/</link>
+        <pubDate>Wed, 04 Sep 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/oo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>OS</title>
+        <link>http://localhost:1313/categories/os/</link>
+        <pubDate>Wed, 26 Jun 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/os/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>CO</title>
+        <link>http://localhost:1313/categories/co/</link>
+        <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/co/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

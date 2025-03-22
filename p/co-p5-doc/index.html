@@ -1,0 +1,3553 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="计组实验P5设计文档">
+<meta name="keywords" content="CO,, 设计文档"><title>CO | P5 - Verilog 流水线 CPU 设计文档</title>
+
+<link rel='canonical' href='http://localhost:1313/p/co-p5-doc/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="CO | P5 - Verilog 流水线 CPU 设计文档">
+<meta property='og:description' content="计组实验P5设计文档">
+<meta property='og:url' content='http://localhost:1313/p/co-p5-doc/'>
+<meta property='og:site_name' content='v1tamin&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-11-12T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-11-12T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="CO | P5 - Verilog 流水线 CPU 设计文档">
+<meta name="twitter:description" content="计组实验P5设计文档">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/avatar_hu_aefa2326ce591fb8.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤠</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">v1tamin&#39;s Blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/MercuryRecords'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-冒险">1. 冒险</a></li>
+    <li><a href="#2-流水线实现">2. 流水线实现</a>
+      <ol>
+        <li><a href="#阻塞">阻塞</a></li>
+        <li><a href="#转发">转发</a></li>
+        <li><a href="#控制器">控制器</a></li>
+        <li><a href="#延迟槽">延迟槽</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#支持的指令">支持的指令</a>
+      <ol>
+        <li>
+          <ol>
+            <li><a href="#r型">R型</a></li>
+            <li><a href="#i型">I型</a></li>
+            <li><a href="#j型">J型</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#取指令单元ifu">取指令单元IFU</a>
+      <ol>
+        <li><a href="#端口说明">端口说明</a></li>
+        <li><a href="#功能定义">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#d级流水线寄存器">D级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#控制器ctrl">控制器CTRL</a>
+      <ol>
+        <li><a href="#端口说明-1">端口说明</a></li>
+        <li><a href="#功能定义-1">功能定义</a></li>
+        <li><a href="#控制信号对应">控制信号对应</a></li>
+      </ol>
+    </li>
+    <li><a href="#次地址计算单元npc">次地址计算单元NPC</a>
+      <ol>
+        <li><a href="#端口说明-2">端口说明</a></li>
+        <li><a href="#功能定义-2">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#d级转发接收端选择器tr_grf_data">D级转发接收端选择器TR_GRF_Data</a>
+      <ol>
+        <li><a href="#端口说明-3">端口说明</a></li>
+      </ol>
+    </li>
+    <li><a href="#寄存器堆grf">寄存器堆GRF</a>
+      <ol>
+        <li><a href="#端口说明-4">端口说明</a></li>
+        <li><a href="#功能定义-3">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#扩展单元ext">扩展单元EXT</a>
+      <ol>
+        <li><a href="#端口说明-5">端口说明</a></li>
+        <li><a href="#功能定义-4">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#e级流水线寄存器">E级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#e级转发接收端选择器tr_alu_src">E级转发接收端选择器TR_ALU_SRC</a>
+      <ol>
+        <li><a href="#端口说明-6">端口说明</a></li>
+      </ol>
+    </li>
+    <li><a href="#寄存器写入地址选择器wr_mux">寄存器写入地址选择器WR_MUX</a></li>
+    <li><a href="#alu输入源2选择器alusrc_mux">ALU输入源2选择器ALUSRC_MUX</a></li>
+    <li><a href="#算数运算单元alu">算数运算单元ALU</a>
+      <ol>
+        <li><a href="#端口说明-7">端口说明</a></li>
+        <li><a href="#功能定义-5">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#e级转发输出端选择器wrd_mux">E级转发输出端选择器WRD_MUX</a></li>
+    <li><a href="#m级流水线寄存器">M级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#数据存储器dm">数据存储器DM</a>
+      <ol>
+        <li><a href="#端口说明-8">端口说明</a></li>
+        <li><a href="#功能定义-6">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#w级流水线寄存器">W级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#宏定义">宏定义</a></li>
+    <li><a href="#阻塞转发单元">阻塞转发单元</a>
+      <ol>
+        <li><a href="#hint">hint</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/co/" >
+                CO
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/co-p5-doc/">CO | P5 - Verilog 流水线 CPU 设计文档</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            计组实验P5设计文档
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 12, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 18 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>计组实验 P5 设计文档</p>
+<p>优化思路：lui提前处理，TnewE=0；对sw区分Tuse</p>
+<p>处理器应支持如下指令集：{ add, sub, ori, lw, sw, beq, lui, jal, jr, nop }</p>
+<p><img src="/images/posts/CO/p5-1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h1 id="零教程摘录">零、教程摘录
+</h1><ul>
+<li>从状态机的角度分析，P5 阶段的 CPU 出现功能错误只有这些可能：指令执行流错误（ PC 错误）；写入 GRF 错误；写入 DM 错误。</li>
+<li>五级流水线：Fetch，Decode，Execute，Memory，Writeback</li>
+<li>流水数据的选择：一般而言，我们需要流水的数据只有一个衡量标准，就是我们在其后的流水阶段中需不需要这个数据，比如说 ALU 的计算结果，有的会被写回寄存器文件中，所以我们需要流水这个数据，而 rs 对应的寄存器值，在 M 级和 W 级并没有用到，所以就可以不再流水（仅一般情况）。当一个数据被选择成为了流水数据，那么其在 CPU 中就可能存在多个值。比如 E, M, W 级均会有 ALU 的计算结果（三者并不相同），在编程的时候应当使用流水阶段名前缀将其区分开。</li>
+</ul>
+<h2 id="1-冒险">1. 冒险
+</h2><ul>
+<li>结构冒险：<strong>不同指令同时需要使用同一资源</strong>。本实验采用哈佛体系结构，需要考虑的结构冒险为寄存器文件需要在 D 级和 W 级同时被使用（读写）时并且读和写的寄存器为同一个寄存器时。</li>
+<li>控制冒险：<strong>分支指令（如 beq ）的判断结果会影响接下来指令的执行流</strong>。在判断结果产生之前，我们无法预测分支是否会发生。然而，此时流水线还会继续取指，让后续指令进入流水线。这时就有可能导致错误的产生，即不该被执行的指令进入到了指令的执行流中。</li>
+<li>数据冒险：后面指令需求的数据，正好就是前面指令供给的数据，而后面指令在需要使用数据时，前面供给的数据还没有存入寄存器堆，从而导致后面的指令不能正常地读取到正确的数据。
+<ul>
+<li>解决方法：尽量转发（重定向数据），否则阻塞</li>
+<li><strong>要求大家所有转发数据都来源于流水寄存器而不能是功能部件</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-流水线实现">2. 流水线实现
+</h2><h3 id="阻塞">阻塞
+</h3><ul>
+<li><strong>课程组要求阻塞是指将指令阻塞在 D 级</strong>。当一个指令到达 D 级后，我们需要将它的 $T_{use}​$ 值与后面每一级的  $T_{new}​$​ 进行比较（当然还有 A 值的校验），当  $T_{use}​$&lt; $T_{new}​$时，我们需要阻塞流水线。</li>
+<li>阻塞的实现：（1）冻结PC的值；（2）冻结D级流水线寄存器的值；（3）清零E级流水线寄存器的值（等价于插入nop指令）</li>
+<li>注意复位信号和阻塞信号的优先级问题。仔细设计信号的优先级来保证流水线的正确性。</li>
+</ul>
+<h3 id="转发">转发
+</h3><p>为了实现转发，我们需要两种多路选择器 MUX，分别对应转发的供给者和需求者。</p>
+<h3 id="控制器">控制器
+</h3><p>解决冒险需要进行 AT 值的比较判断，并需要根据判断的结果产生特定的控制信息。这些功能要求我们丰富我们的控制器，使其可以支持这些功能。控制器需要产生的信号包括但不限于<strong>冻结信号，刷新信号，供给者选择器信号，需求者选择器信号</strong>等。</p>
+<p>转发优先级：选择流水线中靠前的“新鲜”的数据进行转发
+rt域有效性：有些指令的 rt 域不是用来表示读寄存器编号的，但不需要对它们进行特判：即使我们转发了相应的数据，也不会影响流水线的正确性，因此无需特判。</p>
+<h3 id="延迟槽">延迟槽
+</h3><blockquote>
+<p>延迟槽就是所有跳转类指令，不论是条件转移满足转移条件（即beq等）还是非条件转移（即j，jr，jal等），它的下一条指令都被写mips汇编程序者写成了一条程序中必须会完成的指令，必须进入流水线，完成所有的步骤。换言之，对于条件转移类指令，无论是否满足转移条件，它的下一条指令都需要执行；对于非条件转移类指令，它的下一条指令也必须执行，所以，在F级不需要设置NPC模块，只需要ADD4模块，而在D级设置NPC模块，它的PC+8指令才是转移后的指令。总结来讲，支持延迟槽就是编写mips汇编语言的人用他们的智慧给搭建流水线CPU的人提供便利。</p></blockquote>
+<h1 id="一设计草稿">一、设计草稿
+</h1><h2 id="支持的指令">支持的指令
+</h2><p>add, sub, ori, lui, lw, sw, beq, jal, jr, nop</p>
+<h4 id="r型">R型
+</h4><ul>
+<li>add: 000000 rs rt rd 00000 100000</li>
+<li>sub: 000000 rs rt rd 00000 100010</li>
+<li>jr:    000000 rs 00_0000_0000 00000 001000</li>
+</ul>
+<h4 id="i型">I型
+</h4><ul>
+<li>beq: 000100 rs rt offset(imm)</li>
+<li>lui: 001111 00000 rt imm
+<ul>
+<li>0 1 0 1 0 0 0 Shift</li>
+</ul>
+</li>
+<li>ori: 001101 rs rt imm</li>
+<li>lw: 100011 base rt offset(imm)</li>
+<li>sw: 101011 base rt offset(imm)</li>
+</ul>
+<h4 id="j型">J型
+</h4><ul>
+<li>jal: 000011 imm26</li>
+</ul>
+<h1 id="1-f级">1. F级
+</h1><h2 id="取指令单元ifu">取指令单元IFU
+</h2><p>含有指令存储器IM和程序计数器PC；IM 容量为 16KiB（4096 × 32bit）</p>
+<h3 id="端口说明">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效，置pc为0x0000_3000</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>stallF</td>
+          <td>I</td>
+          <td>阻塞控制信号</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>pcNext[31:0]</td>
+          <td>I</td>
+          <td>下一条指令的地址</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>pc[31:0]</td>
+          <td>O</td>
+          <td>当前指令地址</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>Instr[31:0]</td>
+          <td>O</td>
+          <td>将要执行的指令</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义">功能定义
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>复位</td>
+          <td><strong>同步</strong>复位，置pc为0x00003000</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>更新</td>
+          <td>在时钟上升沿，更新pc的值为pcNext</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>输出</td>
+          <td>输出当前指令地址对应指令内容</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="d级流水线寄存器">D级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>stallD</td>
+          <td>I</td>
+          <td>阻塞控制信号</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxF</td>
+          <td>I</td>
+          <td>需要流水的F级数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>xxD</td>
+          <td>O</td>
+          <td>D级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="2-d级">2. D级
+</h1><h2 id="控制器ctrl">控制器CTRL
+</h2><p>分布式译码形式的控制器，实例化为ctrl_d</p>
+<h3 id="端口说明-1">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>func[5:0]</td>
+          <td>I</td>
+          <td>指令的5-0位，对R型指令进行进一步判别</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>Opcode[5:0]</td>
+          <td>I</td>
+          <td>指令的31-26位</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>targetRegSel[1:0]</td>
+          <td>O</td>
+          <td>写入寄存器指示信号，控制写入rt、rd、31</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>aluSrc</td>
+          <td>O</td>
+          <td>ALU输入选择信号，高电平时为ImmExtended，低电平时为RD2</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>mem2Reg[1:0]</td>
+          <td>O</td>
+          <td>写入寄存器堆数据选择信号，控制从DM、aluResult、PC+8写入</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>regWrite</td>
+          <td>O</td>
+          <td>高电平时寄存器堆写入使能，低电平时寄存器堆不可写入</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>memWrite</td>
+          <td>O</td>
+          <td>高电平时DM写入使能，低电平时DM不可写入</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>NPCop[2:0]</td>
+          <td>O</td>
+          <td>控制NPC行为</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>ExtOp</td>
+          <td>O</td>
+          <td>高电平时EXT进行符号拓展，低电平时EXT进行0拓展</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>ALUop[3:0]</td>
+          <td>O</td>
+          <td>ALU运算控制信号</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>Tuse</td>
+          <td>O</td>
+          <td>指示当前指令的Tuse，若有两个不同的值，输出较小值</td>
+      </tr>
+      <tr>
+          <td>12</td>
+          <td>TnewE</td>
+          <td>O</td>
+          <td>指示当前指令在E级的Tnew</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-1">功能定义
+</h3><p>根据func和Opcode解析指令类型，进而构建数据通路</p>
+<h3 id="控制信号对应">控制信号对应
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>add</th>
+          <th>sub</th>
+          <th>ori</th>
+          <th>lui</th>
+          <th>lw</th>
+          <th>sw</th>
+          <th>beq</th>
+          <th>jal</th>
+          <th>jr</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>func</td>
+          <td>10 0000</td>
+          <td>10 0010</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>001000</td>
+      </tr>
+      <tr>
+          <td>op</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+          <td>00 1101</td>
+          <td>00 1111</td>
+          <td>10 0011</td>
+          <td>10 1011</td>
+          <td>00 0100</td>
+          <td>000011</td>
+          <td>000000</td>
+      </tr>
+      <tr>
+          <td>TargetReg</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>x</td>
+          <td>x</td>
+          <td>2(31)</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>x</td>
+          <td>x</td>
+          <td>2(PC+8)</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>Branch</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>JImm26</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>JReg</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>x</td>
+          <td>x</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>add</td>
+          <td>sub</td>
+          <td>or</td>
+          <td>shift</td>
+          <td>add</td>
+          <td>add</td>
+          <td>sub</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Tuse</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>x</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>2</td>
+          <td>x</td>
+          <td>x</td>
+          <td>0</td>
+          <td>x</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="次地址计算单元npc">次地址计算单元NPC
+</h2><h3 id="端口说明-2">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>pcF[31:0]</td>
+          <td>I</td>
+          <td>F级指令地址</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>pcD[31:0]</td>
+          <td>I</td>
+          <td>D级指令地址</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>offset[15:0]</td>
+          <td>I</td>
+          <td>16位立即数</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>imm26[25:0]</td>
+          <td>I</td>
+          <td>j、jal指令使用的26位立即数</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>NPCop[2:0]</td>
+          <td>I</td>
+          <td>NPC行为控制信号</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>TR_GRF_RD1[31:0]</td>
+          <td>I</td>
+          <td>寄存器rs的值，可用于beq相等判断和jr指令使用</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>TR_GRF_RD2[31:0]</td>
+          <td>I</td>
+          <td>寄存器rt的值，可用于beq相等判断</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>NPCoutput[31:0]</td>
+          <td>O</td>
+          <td>下一条指令的地址</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-2">功能定义
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>输出pcNext</td>
+          <td>输出pcNext</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="d级转发接收端选择器tr_grf_data">D级转发接收端选择器TR_GRF_Data
+</h2><p>分别实例化为tr_grf_d1，tr_grf_d2</p>
+<h3 id="端口说明-3">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>grfData[31:0]</td>
+          <td>I</td>
+          <td>寄存器数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataE[31:0]</td>
+          <td>I</td>
+          <td>E级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataM[31:0]</td>
+          <td>I</td>
+          <td>M级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataW[31:0]</td>
+          <td>I</td>
+          <td>W级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>grfOutTrOp[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>trData[31:0]</td>
+          <td>O</td>
+          <td>转发出去的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="寄存器堆grf">寄存器堆GRF
+</h2><h3 id="端口说明-4">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>WE</td>
+          <td>I</td>
+          <td>写使能信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>A1[4:0]</td>
+          <td>I</td>
+          <td>5位地址输入信号，指定寄存器位置，读出寄存器数据到RD1</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>A2[4:0]</td>
+          <td>I</td>
+          <td>5位地址输入信号，指定寄存器位置，读出寄存器数据到RD2</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>A3[4:0]</td>
+          <td>I</td>
+          <td>5位地址输入信号，指定寄存器位置，将WD数据写入到寄存器</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>WD [31:0]</td>
+          <td>I</td>
+          <td>32位写入数据内容</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>RD1 [31:0]</td>
+          <td>O</td>
+          <td>输出A1指定的寄存器的32位数据</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>RD2 [31:0]</td>
+          <td>O</td>
+          <td>输出A2指定的寄存器的32位数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-3">功能定义
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>同步复位</td>
+          <td>reset有效时同步复位所有寄存器</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>读出数据</td>
+          <td>将A1和A2地址对应的寄存器的值分别通过RD1和RD2读出</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>写入数据</td>
+          <td>当WE有效且clk上升沿来临时将WD数据写入到A3指定的寄存器</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="扩展单元ext">扩展单元EXT
+</h2><h3 id="端口说明-5">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>IN[15:0]</td>
+          <td>I</td>
+          <td>要扩展的16位立即数</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>ExtOp</td>
+          <td>I</td>
+          <td>扩展方式控制信号，高电平时进行符号拓展，低电平时进行零拓展</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>OUT[31:0]</td>
+          <td>O</td>
+          <td>扩展结果</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-4">功能定义
+</h3><p>根据ExtOp信号对立即数进行对应拓展</p>
+<h2 id="e级流水线寄存器">E级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效，输入为STALL</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>xxD</td>
+          <td>I</td>
+          <td>需要流水的D级数据</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxE</td>
+          <td>O</td>
+          <td>E级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="3-e级">3. E级
+</h1><p>省略E级控制器</p>
+<h2 id="e级转发接收端选择器tr_alu_src">E级转发接收端选择器TR_ALU_SRC
+</h2><p>分别实例化为tr_alu_src1，tr_alu_src2</p>
+<h3 id="端口说明-6">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>TR_GRF_RD[31:0]</td>
+          <td>I</td>
+          <td>寄存器数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataM[31:0]</td>
+          <td>I</td>
+          <td>M级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataW[31:0]</td>
+          <td>I</td>
+          <td>W级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>trSel[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>aluSrc[31:0]</td>
+          <td>O</td>
+          <td>转发出去的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="寄存器写入地址选择器wr_mux">寄存器写入地址选择器WR_MUX
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>rt[4:0]</td>
+          <td>I</td>
+          <td>rt寄存器地址</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>rd[4:0]</td>
+          <td>I</td>
+          <td>rd寄存器地址</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>sel[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>writeRegAddr[4:0]</td>
+          <td>O</td>
+          <td>寄存器写入地址</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="alu输入源2选择器alusrc_mux">ALU输入源2选择器ALUSRC_MUX
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>rtData[31:0]</td>
+          <td>I</td>
+          <td>rt寄存器数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>immExtended32[31:0]</td>
+          <td>I</td>
+          <td>扩展后的立即数</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>aluSrcSel</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>src2[31:0]</td>
+          <td>O</td>
+          <td>alu输入源数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="算数运算单元alu">算数运算单元ALU
+</h2><h3 id="端口说明-7">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>src1[31:0]</td>
+          <td>I</td>
+          <td>ALU计算的第一个操作数</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>src2[31:0]</td>
+          <td>I</td>
+          <td>ALU计算的第二个操作数</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>aluop[3:0]</td>
+          <td>I</td>
+          <td>ALU功能选择信号，MIPS-C指令集需要9种运算</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>res [31:0]</td>
+          <td>O</td>
+          <td>输出计算结果</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-5">功能定义
+</h3><p>支持无符号加、无符号减、或、与、异或、src2左移16位，aluop见def.v</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>ALUop</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>无符号加</td>
+          <td>00</td>
+          <td>res = src1 + src2</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>无符号减</td>
+          <td>01</td>
+          <td>res = src1 - src2</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>或</td>
+          <td>10</td>
+          <td>res = src1 | src2</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>src2左移16位</td>
+          <td>11</td>
+          <td>res = src2 &laquo; 0x10</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="e级转发输出端选择器wrd_mux">E级转发输出端选择器WRD_MUX
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>aluOut[31:0]</td>
+          <td>I</td>
+          <td>alu运算结果</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>dmDataOut[31:0]</td>
+          <td>I</td>
+          <td>DM读出的数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>pc[31:0]</td>
+          <td>I</td>
+          <td>当前指令的地址</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>trSel[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号，来源为mem2Reg</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>aluSrc[31:0]</td>
+          <td>O</td>
+          <td>转发出去的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="m级流水线寄存器">M级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>xxE</td>
+          <td>I</td>
+          <td>需要流水的E级数据</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxM</td>
+          <td>O</td>
+          <td>M级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="4-m级">4. M级
+</h1><p>省略控制器和转发输出的选择器</p>
+<h2 id="数据存储器dm">数据存储器DM
+</h2><p>DM 容量为 12KiB（3072 × 32bit）</p>
+<p><img src="/images/posts/CO/p5-2.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="端口说明-8">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>MemWrite</td>
+          <td>I</td>
+          <td>写使能信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>MemAddr[11:0]</td>
+          <td>I</td>
+          <td>12位地址输入信号，指定内存位置</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>DataWrite[31:0]</td>
+          <td>I</td>
+          <td>32位写入数据内容</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>DataRead[31:0]</td>
+          <td>O</td>
+          <td>32位读出数据内容</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-6">功能定义
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>复位</td>
+          <td><strong>同步</strong>复位，清空所有数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>更新</td>
+          <td>在时钟上升沿且写使能信号有效时，更新指定地址的内容为指定数据</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>输出</td>
+          <td>输出当前内存地址对应数据内容</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="w级流水线寄存器">W级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>xxM</td>
+          <td>I</td>
+          <td>需要流水的M级数据</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxW</td>
+          <td>O</td>
+          <td>W级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="5-w级">5. W级
+</h1><p>省略控制器和转发输出的选择器</p>
+<h1 id="6-宏定义和阻塞转发单元">6. 宏定义和阻塞转发单元
+</h1><h2 id="宏定义">宏定义
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// for ALU
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define ALU_add 4&#39;b000
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_sub 4&#39;b001
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_or  4&#39;b010
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_and 4&#39;b011
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_xor 4&#39;b100
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_lui 4&#39;b101
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for GRF&#39;s A3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define REG_T 2&#39;b00
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define REG_D 2&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define REG_31 2&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for GRF&#39;s WD
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define FromALURes 2&#39;b00
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define FromMem 2&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define FromPCAdd8 2&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for NPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define NPC_PCPlus4 3&#39;b00
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_Branch 3&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_Jimm26 3&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_JReg 3&#39;b11
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for TR
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define TR_FromE 2&#39;b11
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define TR_FromM 2&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define TR_FromW 2&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define TR_FromOrigin 2&#39;b00
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="阻塞转发单元">阻塞转发单元
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_grf_rd1_sel_d</span> <span class="o">=</span> <span class="p">(</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewE</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromE</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                          <span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                          <span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                          <span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_grf_rd2_sel_d</span> <span class="o">=</span> <span class="p">(</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewE</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromE</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                          <span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                          <span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                          <span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_alu_src1_sel_e</span> <span class="o">=</span> <span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                           <span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                           <span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_alu_src2_sel_e</span> <span class="o">=</span> <span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                           <span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">                           <span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">STALL</span> <span class="o">=</span> <span class="p">((</span><span class="n">Tuse</span> <span class="o">&lt;</span> <span class="n">TnewE</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)))</span> <span class="o">||</span>
+</span></span><span class="line"><span class="cl">             <span class="p">((</span><span class="n">Tuse</span> <span class="o">&lt;</span> <span class="n">TnewM</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)))</span> <span class="o">?</span> 
+</span></span><span class="line"><span class="cl">             <span class="mh">1</span><span class="mb">&#39;b1</span> <span class="o">:</span> <span class="mh">2</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="hint">hint
+</h3><ol>
+<li>function</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">function</span> <span class="p">[</span><span class="n">data_type</span><span class="p">]</span> <span class="n">function_name</span> <span class="p">(</span><span class="n">input_declaration</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">function_body</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="k">return</span> <span class="n">statement</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="k">endfunction</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">module</span> <span class="n">fun_user</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">input</span> <span class="n">a</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">input</span> <span class="n">b</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">input</span> <span class="n">c</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">output</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">output</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d2</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">dataout</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">input</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">input</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">input</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dataout</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">endfunction</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">d</span> <span class="o">=</span> <span class="n">dataout</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">endmodule</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="二思考题">二、思考题
+</h1><blockquote>
+<p>我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。</p></blockquote>
+<p>以beq指令为例，提前分支判断导致其Tuse为0，由于Tuse &lt; Tnew时需要进行阻塞，而如add、ori、lw等指令TnewE都大于0，非常容易组合产生有阻塞的指令序列，因此并非总能提高效率。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">lw</span> <span class="n">$t0</span><span class="p">,</span> <span class="mh">0</span><span class="p">(</span><span class="n">$s0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">beq</span> <span class="n">$t0</span><span class="p">,</span> <span class="n">$t1</span><span class="p">,</span> <span class="n">label</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="nl">label:</span> <span class="p">...</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计？</p></blockquote>
+<p>考虑延迟槽，跳转指令后的下一条指令A一定随之执行，其地址为pc+4；如果写回数据为pc+4，则调用jr等指令时再次跳转到pc+4，A又要被执行一次，与需求情况不符。</p>
+<blockquote>
+<p>我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？</p></blockquote>
+<p>从功能部件转发，反而导致对应级的执行总延迟增加，使得流水线的最小时钟周期可能变长，降低效率；一开始以为有数据不稳定的问题，例如功能部件的执行延迟可能低于转发逻辑的执行延迟；但考虑到只要时钟周期能够保证就不存在这种问题</p>
+<blockquote>
+<p>我们为什么要使用 GPR 内部转发？该如何实现？</p></blockquote>
+<p>W级要写入的数据可能与D级要读出的数据发生冲突，采用内部转发使得就算时钟上升沿未到来，D级读出的数据也是正确的；我的实现保证regs[0]读出数据始终为0。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">RD1</span> <span class="o">=</span> <span class="p">(</span><span class="n">A1</span> <span class="o">==</span> <span class="n">A3</span> <span class="o">&amp;&amp;</span> <span class="n">WE</span> <span class="o">==</span> <span class="mh">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">WD</span> <span class="o">:</span> <span class="n">regs</span><span class="p">[</span><span class="n">A1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">RD2</span> <span class="o">=</span> <span class="p">(</span><span class="n">A2</span> <span class="o">==</span> <span class="n">A3</span> <span class="o">&amp;&amp;</span> <span class="n">WE</span> <span class="o">==</span> <span class="mh">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">WD</span> <span class="o">:</span> <span class="n">regs</span><span class="p">[</span><span class="n">A2</span><span class="p">];</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？</p></blockquote>
+<p>需求者：GRF读出数据、ALU来源数据
+供给者：E级PC、M级ALURes、M级PC、W级dmDataOut、W级ALURes、W级PC
+转发数据通路：to D from E M W; to E from M W.</p>
+<blockquote>
+<p>在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。</p></blockquote>
+<p>计算指令：更改CTRL和ALU，不修改转发逻辑
+跳转指令：条件跳转+条件写，在NPC增加跳转判断，在D级进行写判断，扩展regWriteAddr的选择、转发供给端的选择
+访存指令：感觉最可能出Load型指令，在W级增加条件判断，TnewE一般为2；如果对目标寄存器地址有影响，要增加选择器。</p>
+<blockquote>
+<p>确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。</p></blockquote>
+<p>我的译码方式为分布式译码。这种方法比较灵活，可以降低需要流水的信号量；但是需要实例化多个控制器，复杂性会有所增加。</p>
+<h1 id="三测试方案">三、测试方案
+</h1><ol>
+<li>使用课程组提供的测试数据和Mars进行对拍。</li>
+<li>自行构造数据，参考了学长的评测机搭建思路，还在迭代改进中</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span><span class="lnt">317
+</span><span class="lnt">318
+</span><span class="lnt">319
+</span><span class="lnt">320
+</span><span class="lnt">321
+</span><span class="lnt">322
+</span><span class="lnt">323
+</span><span class="lnt">324
+</span><span class="lnt">325
+</span><span class="lnt">326
+</span><span class="lnt">327
+</span><span class="lnt">328
+</span><span class="lnt">329
+</span><span class="lnt">330
+</span><span class="lnt">331
+</span><span class="lnt">332
+</span><span class="lnt">333
+</span><span class="lnt">334
+</span><span class="lnt">335
+</span><span class="lnt">336
+</span><span class="lnt">337
+</span><span class="lnt">338
+</span><span class="lnt">339
+</span><span class="lnt">340
+</span><span class="lnt">341
+</span><span class="lnt">342
+</span><span class="lnt">343
+</span><span class="lnt">344
+</span><span class="lnt">345
+</span><span class="lnt">346
+</span><span class="lnt">347
+</span><span class="lnt">348
+</span><span class="lnt">349
+</span><span class="lnt">350
+</span><span class="lnt">351
+</span><span class="lnt">352
+</span><span class="lnt">353
+</span><span class="lnt">354
+</span><span class="lnt">355
+</span><span class="lnt">356
+</span><span class="lnt">357
+</span><span class="lnt">358
+</span><span class="lnt">359
+</span><span class="lnt">360
+</span><span class="lnt">361
+</span><span class="lnt">362
+</span><span class="lnt">363
+</span><span class="lnt">364
+</span><span class="lnt">365
+</span><span class="lnt">366
+</span><span class="lnt">367
+</span><span class="lnt">368
+</span><span class="lnt">369
+</span><span class="lnt">370
+</span><span class="lnt">371
+</span><span class="lnt">372
+</span><span class="lnt">373
+</span><span class="lnt">374
+</span><span class="lnt">375
+</span><span class="lnt">376
+</span><span class="lnt">377
+</span><span class="lnt">378
+</span><span class="lnt">379
+</span><span class="lnt">380
+</span><span class="lnt">381
+</span><span class="lnt">382
+</span><span class="lnt">383
+</span><span class="lnt">384
+</span><span class="lnt">385
+</span><span class="lnt">386
+</span><span class="lnt">387
+</span><span class="lnt">388
+</span><span class="lnt">389
+</span><span class="lnt">390
+</span><span class="lnt">391
+</span><span class="lnt">392
+</span><span class="lnt">393
+</span><span class="lnt">394
+</span><span class="lnt">395
+</span><span class="lnt">396
+</span><span class="lnt">397
+</span><span class="lnt">398
+</span><span class="lnt">399
+</span><span class="lnt">400
+</span><span class="lnt">401
+</span><span class="lnt">402
+</span><span class="lnt">403
+</span><span class="lnt">404
+</span><span class="lnt">405
+</span><span class="lnt">406
+</span><span class="lnt">407
+</span><span class="lnt">408
+</span><span class="lnt">409
+</span><span class="lnt">410
+</span><span class="lnt">411
+</span><span class="lnt">412
+</span><span class="lnt">413
+</span><span class="lnt">414
+</span><span class="lnt">415
+</span><span class="lnt">416
+</span><span class="lnt">417
+</span><span class="lnt">418
+</span><span class="lnt">419
+</span><span class="lnt">420
+</span><span class="lnt">421
+</span><span class="lnt">422
+</span><span class="lnt">423
+</span><span class="lnt">424
+</span><span class="lnt">425
+</span><span class="lnt">426
+</span><span class="lnt">427
+</span><span class="lnt">428
+</span><span class="lnt">429
+</span><span class="lnt">430
+</span><span class="lnt">431
+</span><span class="lnt">432
+</span><span class="lnt">433
+</span><span class="lnt">434
+</span><span class="lnt">435
+</span><span class="lnt">436
+</span><span class="lnt">437
+</span><span class="lnt">438
+</span><span class="lnt">439
+</span><span class="lnt">440
+</span><span class="lnt">441
+</span><span class="lnt">442
+</span><span class="lnt">443
+</span><span class="lnt">444
+</span><span class="lnt">445
+</span><span class="lnt">446
+</span><span class="lnt">447
+</span><span class="lnt">448
+</span><span class="lnt">449
+</span><span class="lnt">450
+</span><span class="lnt">451
+</span><span class="lnt">452
+</span><span class="lnt">453
+</span><span class="lnt">454
+</span><span class="lnt">455
+</span><span class="lnt">456
+</span><span class="lnt">457
+</span><span class="lnt">458
+</span><span class="lnt">459
+</span><span class="lnt">460
+</span><span class="lnt">461
+</span><span class="lnt">462
+</span><span class="lnt">463
+</span><span class="lnt">464
+</span><span class="lnt">465
+</span><span class="lnt">466
+</span><span class="lnt">467
+</span><span class="lnt">468
+</span><span class="lnt">469
+</span><span class="lnt">470
+</span><span class="lnt">471
+</span><span class="lnt">472
+</span><span class="lnt">473
+</span><span class="lnt">474
+</span><span class="lnt">475
+</span><span class="lnt">476
+</span><span class="lnt">477
+</span><span class="lnt">478
+</span><span class="lnt">479
+</span><span class="lnt">480
+</span><span class="lnt">481
+</span><span class="lnt">482
+</span><span class="lnt">483
+</span><span class="lnt">484
+</span><span class="lnt">485
+</span><span class="lnt">486
+</span><span class="lnt">487
+</span><span class="lnt">488
+</span><span class="lnt">489
+</span><span class="lnt">490
+</span><span class="lnt">491
+</span><span class="lnt">492
+</span><span class="lnt">493
+</span><span class="lnt">494
+</span><span class="lnt">495
+</span><span class="lnt">496
+</span><span class="lnt">497
+</span><span class="lnt">498
+</span><span class="lnt">499
+</span><span class="lnt">500
+</span><span class="lnt">501
+</span><span class="lnt">502
+</span><span class="lnt">503
+</span><span class="lnt">504
+</span><span class="lnt">505
+</span><span class="lnt">506
+</span><span class="lnt">507
+</span><span class="lnt">508
+</span><span class="lnt">509
+</span><span class="lnt">510
+</span><span class="lnt">511
+</span><span class="lnt">512
+</span><span class="lnt">513
+</span><span class="lnt">514
+</span><span class="lnt">515
+</span><span class="lnt">516
+</span><span class="lnt">517
+</span><span class="lnt">518
+</span><span class="lnt">519
+</span><span class="lnt">520
+</span><span class="lnt">521
+</span><span class="lnt">522
+</span><span class="lnt">523
+</span><span class="lnt">524
+</span><span class="lnt">525
+</span><span class="lnt">526
+</span><span class="lnt">527
+</span><span class="lnt">528
+</span><span class="lnt">529
+</span><span class="lnt">530
+</span><span class="lnt">531
+</span><span class="lnt">532
+</span><span class="lnt">533
+</span><span class="lnt">534
+</span><span class="lnt">535
+</span><span class="lnt">536
+</span><span class="lnt">537
+</span><span class="lnt">538
+</span><span class="lnt">539
+</span><span class="lnt">540
+</span><span class="lnt">541
+</span><span class="lnt">542
+</span><span class="lnt">543
+</span><span class="lnt">544
+</span><span class="lnt">545
+</span><span class="lnt">546
+</span><span class="lnt">547
+</span><span class="lnt">548
+</span><span class="lnt">549
+</span><span class="lnt">550
+</span><span class="lnt">551
+</span><span class="lnt">552
+</span><span class="lnt">553
+</span><span class="lnt">554
+</span><span class="lnt">555
+</span><span class="lnt">556
+</span><span class="lnt">557
+</span><span class="lnt">558
+</span><span class="lnt">559
+</span><span class="lnt">560
+</span><span class="lnt">561
+</span><span class="lnt">562
+</span><span class="lnt">563
+</span><span class="lnt">564
+</span><span class="lnt">565
+</span><span class="lnt">566
+</span><span class="lnt">567
+</span><span class="lnt">568
+</span><span class="lnt">569
+</span><span class="lnt">570
+</span><span class="lnt">571
+</span><span class="lnt">572
+</span><span class="lnt">573
+</span><span class="lnt">574
+</span><span class="lnt">575
+</span><span class="lnt">576
+</span><span class="lnt">577
+</span><span class="lnt">578
+</span><span class="lnt">579
+</span><span class="lnt">580
+</span><span class="lnt">581
+</span><span class="lnt">582
+</span><span class="lnt">583
+</span><span class="lnt">584
+</span><span class="lnt">585
+</span><span class="lnt">586
+</span><span class="lnt">587
+</span><span class="lnt">588
+</span><span class="lnt">589
+</span><span class="lnt">590
+</span><span class="lnt">591
+</span><span class="lnt">592
+</span><span class="lnt">593
+</span><span class="lnt">594
+</span><span class="lnt">595
+</span><span class="lnt">596
+</span><span class="lnt">597
+</span><span class="lnt">598
+</span><span class="lnt">599
+</span><span class="lnt">600
+</span><span class="lnt">601
+</span><span class="lnt">602
+</span><span class="lnt">603
+</span><span class="lnt">604
+</span><span class="lnt">605
+</span><span class="lnt">606
+</span><span class="lnt">607
+</span><span class="lnt">608
+</span><span class="lnt">609
+</span><span class="lnt">610
+</span><span class="lnt">611
+</span><span class="lnt">612
+</span><span class="lnt">613
+</span><span class="lnt">614
+</span><span class="lnt">615
+</span><span class="lnt">616
+</span><span class="lnt">617
+</span><span class="lnt">618
+</span><span class="lnt">619
+</span><span class="lnt">620
+</span><span class="lnt">621
+</span><span class="lnt">622
+</span><span class="lnt">623
+</span><span class="lnt">624
+</span><span class="lnt">625
+</span><span class="lnt">626
+</span><span class="lnt">627
+</span><span class="lnt">628
+</span><span class="lnt">629
+</span><span class="lnt">630
+</span><span class="lnt">631
+</span><span class="lnt">632
+</span><span class="lnt">633
+</span><span class="lnt">634
+</span><span class="lnt">635
+</span><span class="lnt">636
+</span><span class="lnt">637
+</span><span class="lnt">638
+</span><span class="lnt">639
+</span><span class="lnt">640
+</span><span class="lnt">641
+</span><span class="lnt">642
+</span><span class="lnt">643
+</span><span class="lnt">644
+</span><span class="lnt">645
+</span><span class="lnt">646
+</span><span class="lnt">647
+</span><span class="lnt">648
+</span><span class="lnt">649
+</span><span class="lnt">650
+</span><span class="lnt">651
+</span><span class="lnt">652
+</span><span class="lnt">653
+</span><span class="lnt">654
+</span><span class="lnt">655
+</span><span class="lnt">656
+</span><span class="lnt">657
+</span><span class="lnt">658
+</span><span class="lnt">659
+</span><span class="lnt">660
+</span><span class="lnt">661
+</span><span class="lnt">662
+</span><span class="lnt">663
+</span><span class="lnt">664
+</span><span class="lnt">665
+</span><span class="lnt">666
+</span><span class="lnt">667
+</span><span class="lnt">668
+</span><span class="lnt">669
+</span><span class="lnt">670
+</span><span class="lnt">671
+</span><span class="lnt">672
+</span><span class="lnt">673
+</span><span class="lnt">674
+</span><span class="lnt">675
+</span><span class="lnt">676
+</span><span class="lnt">677
+</span><span class="lnt">678
+</span><span class="lnt">679
+</span><span class="lnt">680
+</span><span class="lnt">681
+</span><span class="lnt">682
+</span><span class="lnt">683
+</span><span class="lnt">684
+</span><span class="lnt">685
+</span><span class="lnt">686
+</span><span class="lnt">687
+</span><span class="lnt">688
+</span><span class="lnt">689
+</span><span class="lnt">690
+</span><span class="lnt">691
+</span><span class="lnt">692
+</span><span class="lnt">693
+</span><span class="lnt">694
+</span><span class="lnt">695
+</span><span class="lnt">696
+</span><span class="lnt">697
+</span><span class="lnt">698
+</span><span class="lnt">699
+</span><span class="lnt">700
+</span><span class="lnt">701
+</span><span class="lnt">702
+</span><span class="lnt">703
+</span><span class="lnt">704
+</span><span class="lnt">705
+</span><span class="lnt">706
+</span><span class="lnt">707
+</span><span class="lnt">708
+</span><span class="lnt">709
+</span><span class="lnt">710
+</span><span class="lnt">711
+</span><span class="lnt">712
+</span><span class="lnt">713
+</span><span class="lnt">714
+</span><span class="lnt">715
+</span><span class="lnt">716
+</span><span class="lnt">717
+</span><span class="lnt">718
+</span><span class="lnt">719
+</span><span class="lnt">720
+</span><span class="lnt">721
+</span><span class="lnt">722
+</span><span class="lnt">723
+</span><span class="lnt">724
+</span><span class="lnt">725
+</span><span class="lnt">726
+</span><span class="lnt">727
+</span><span class="lnt">728
+</span><span class="lnt">729
+</span><span class="lnt">730
+</span><span class="lnt">731
+</span><span class="lnt">732
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">lui $0, 0xf3e
+</span></span><span class="line"><span class="cl">ori $0, $0, 0x3256
+</span></span><span class="line"><span class="cl">lui $1, 0xeffc
+</span></span><span class="line"><span class="cl">ori $1, $1, 0xe15e
+</span></span><span class="line"><span class="cl">lui $2, 0xedd2
+</span></span><span class="line"><span class="cl">ori $2, $2, 0x9476
+</span></span><span class="line"><span class="cl">lui $3, 0x3101
+</span></span><span class="line"><span class="cl">ori $3, $3, 0x99c7
+</span></span><span class="line"><span class="cl">lui $4, 0x1a28
+</span></span><span class="line"><span class="cl">ori $4, $4, 0xc4e3
+</span></span><span class="line"><span class="cl">lui $5, 0x8e4a
+</span></span><span class="line"><span class="cl">ori $5, $5, 0x8477
+</span></span><span class="line"><span class="cl">lui $6, 0x414c
+</span></span><span class="line"><span class="cl">ori $6, $6, 0xff33
+</span></span><span class="line"><span class="cl">lui $7, 0xed44
+</span></span><span class="line"><span class="cl">ori $7, $7, 0x5ab7
+</span></span><span class="line"><span class="cl">lui $8, 0x84e0
+</span></span><span class="line"><span class="cl">ori $8, $8, 0x93ee
+</span></span><span class="line"><span class="cl">lui $9, 0x4b20
+</span></span><span class="line"><span class="cl">ori $9, $9, 0x80
+</span></span><span class="line"><span class="cl">lui $10, 0x821e
+</span></span><span class="line"><span class="cl">ori $10, $10, 0xeb06
+</span></span><span class="line"><span class="cl">lui $11, 0x64a5
+</span></span><span class="line"><span class="cl">ori $11, $11, 0x264
+</span></span><span class="line"><span class="cl">lui $12, 0xd7b
+</span></span><span class="line"><span class="cl">ori $12, $12, 0x7ce0
+</span></span><span class="line"><span class="cl">lui $13, 0xdf5d
+</span></span><span class="line"><span class="cl">ori $13, $13, 0xa82c
+</span></span><span class="line"><span class="cl">lui $14, 0xcab9
+</span></span><span class="line"><span class="cl">ori $14, $14, 0x7316
+</span></span><span class="line"><span class="cl">lui $15, 0xc045
+</span></span><span class="line"><span class="cl">ori $15, $15, 0x5cda
+</span></span><span class="line"><span class="cl">lui $16, 0x359a
+</span></span><span class="line"><span class="cl">ori $16, $16, 0xfb82
+</span></span><span class="line"><span class="cl">lui $17, 0x21f3
+</span></span><span class="line"><span class="cl">ori $17, $17, 0x8d32
+</span></span><span class="line"><span class="cl">lui $18, 0x330a
+</span></span><span class="line"><span class="cl">ori $18, $18, 0xf0fe
+</span></span><span class="line"><span class="cl">lui $19, 0xeaa5
+</span></span><span class="line"><span class="cl">ori $19, $19, 0xa70a
+</span></span><span class="line"><span class="cl">lui $20, 0x86f
+</span></span><span class="line"><span class="cl">ori $20, $20, 0x199f
+</span></span><span class="line"><span class="cl">lui $21, 0xbfc4
+</span></span><span class="line"><span class="cl">ori $21, $21, 0x77e6
+</span></span><span class="line"><span class="cl">lui $22, 0x446c
+</span></span><span class="line"><span class="cl">ori $22, $22, 0x4f02
+</span></span><span class="line"><span class="cl">lui $23, 0x513a
+</span></span><span class="line"><span class="cl">ori $23, $23, 0xa2d8
+</span></span><span class="line"><span class="cl">lui $24, 0xbcba
+</span></span><span class="line"><span class="cl">ori $24, $24, 0xa05
+</span></span><span class="line"><span class="cl">lui $25, 0xac65
+</span></span><span class="line"><span class="cl">ori $25, $25, 0xf0f0
+</span></span><span class="line"><span class="cl">lui $26, 0xcb68
+</span></span><span class="line"><span class="cl">ori $26, $26, 0x7cdc
+</span></span><span class="line"><span class="cl">lui $27, 0xd901
+</span></span><span class="line"><span class="cl">ori $27, $27, 0xca0a
+</span></span><span class="line"><span class="cl">lui $28, 0x84e2
+</span></span><span class="line"><span class="cl">ori $28, $28, 0xbdcd
+</span></span><span class="line"><span class="cl">lui $29, 0x8473
+</span></span><span class="line"><span class="cl">ori $29, $29, 0x9ced
+</span></span><span class="line"><span class="cl">lui $30, 0x12a0
+</span></span><span class="line"><span class="cl">ori $30, $30, 0x901f
+</span></span><span class="line"><span class="cl">lui $31, 0x119a
+</span></span><span class="line"><span class="cl">ori $31, $31, 0xedcf
+</span></span><span class="line"><span class="cl">lui $19, 0xb672
+</span></span><span class="line"><span class="cl">lui $19, 0x0
+</span></span><span class="line"><span class="cl">ori $19, $19, 0xf34
+</span></span><span class="line"><span class="cl">sw $8, 1288($19)
+</span></span><span class="line"><span class="cl">sub $9, $16, $1
+</span></span><span class="line"><span class="cl">lui $9, 0x0
+</span></span><span class="line"><span class="cl">ori $9, $9, 0x7260
+</span></span><span class="line"><span class="cl">sw $17, -21852($9)
+</span></span><span class="line"><span class="cl">add $10, $20, $14
+</span></span><span class="line"><span class="cl">ori $31, $10, 0x8dc
+</span></span><span class="line"><span class="cl">ori $2, $5, 0xb358
+</span></span><span class="line"><span class="cl">ori $24, $2, 0xf67b
+</span></span><span class="line"><span class="cl">ori $18, $28, 0x7722
+</span></span><span class="line"><span class="cl">ori $26, $18, 0xd9c0
+</span></span><span class="line"><span class="cl">lui $27, 0xa1f9
+</span></span><span class="line"><span class="cl">lui $27, 0xffff
+</span></span><span class="line"><span class="cl">ori $27, $27, 0xfb70
+</span></span><span class="line"><span class="cl">lw $18, 1272($27)
+</span></span><span class="line"><span class="cl">lui $9, 0x3405
+</span></span><span class="line"><span class="cl">lui $9, 0x0
+</span></span><span class="line"><span class="cl">ori $9, $9, 0x2306
+</span></span><span class="line"><span class="cl">sw $10, -8450($9)
+</span></span><span class="line"><span class="cl">lui $15, 0x879a
+</span></span><span class="line"><span class="cl">lui $15, 0xffff
+</span></span><span class="line"><span class="cl">ori $15, $15, 0xee09
+</span></span><span class="line"><span class="cl">lw $18, 7651($15)
+</span></span><span class="line"><span class="cl">add $2, $0, $8
+</span></span><span class="line"><span class="cl">ori $5, $2, 0x3e48
+</span></span><span class="line"><span class="cl">lw $8, 10172($18)
+</span></span><span class="line"><span class="cl">sub $27, $8, $16
+</span></span><span class="line"><span class="cl">add $20, $17, $20
+</span></span><span class="line"><span class="cl">sub $14, $20, $27
+</span></span><span class="line"><span class="cl">sub $1, $29, $10
+</span></span><span class="line"><span class="cl">lui $1, 0xffff
+</span></span><span class="line"><span class="cl">ori $1, $1, 0xfe46
+</span></span><span class="line"><span class="cl">lw $26, 2894($1)
+</span></span><span class="line"><span class="cl">ori $14, $18, 0x6052
+</span></span><span class="line"><span class="cl">sw $16, -20594($14)
+</span></span><span class="line"><span class="cl">lw $2, 1036($26)
+</span></span><span class="line"><span class="cl">lw $16, 11328($2)
+</span></span><span class="line"><span class="cl">add $4, $15, $2
+</span></span><span class="line"><span class="cl">lw $2, 11287($4)
+</span></span><span class="line"><span class="cl">lui $0, 0x9d4
+</span></span><span class="line"><span class="cl">add $9, $26, $0
+</span></span><span class="line"><span class="cl">add $30, $5, $14
+</span></span><span class="line"><span class="cl">add $12, $30, $17
+</span></span><span class="line"><span class="cl">lw $28, -23578($14)
+</span></span><span class="line"><span class="cl">ori $13, $28, 0x453d
+</span></span><span class="line"><span class="cl">lui $27, 0xffff
+</span></span><span class="line"><span class="cl">ori $27, $27, 0xee6b
+</span></span><span class="line"><span class="cl">lw $19, 16273($27)
+</span></span><span class="line"><span class="cl">ori $13, $19, 0xe47a
+</span></span><span class="line"><span class="cl">lw $7, 2264($9)
+</span></span><span class="line"><span class="cl">sw $30, 6960($7)
+</span></span><span class="line"><span class="cl">sub $14, $5, $5
+</span></span><span class="line"><span class="cl">ori $13, $14, 0xbbab
+</span></span><span class="line"><span class="cl">ori $6, $7, 0x77d7
+</span></span><span class="line"><span class="cl">ori $2, $6, 0x4567
+</span></span><span class="line"><span class="cl">sub $9, $11, $3
+</span></span><span class="line"><span class="cl">sub $11, $16, $9
+</span></span><span class="line"><span class="cl">sub $23, $26, $0
+</span></span><span class="line"><span class="cl">sub $0, $23, $19
+</span></span><span class="line"><span class="cl">add $21, $20, $6
+</span></span><span class="line"><span class="cl">lui $21, 0xffff
+</span></span><span class="line"><span class="cl">ori $21, $21, 0xdf61
+</span></span><span class="line"><span class="cl">sw $30, 9535($21)
+</span></span><span class="line"><span class="cl">add $31, $2, $6
+</span></span><span class="line"><span class="cl">lui $31, 0x0
+</span></span><span class="line"><span class="cl">ori $31, $31, 0x28d4
+</span></span><span class="line"><span class="cl">sw $0, -7256($31)
+</span></span><span class="line"><span class="cl">lui $19, 0x236d
+</span></span><span class="line"><span class="cl">lui $19, 0x0
+</span></span><span class="line"><span class="cl">ori $19, $19, 0x4c30
+</span></span><span class="line"><span class="cl">sw $31, -12408($19)
+</span></span><span class="line"><span class="cl">sub $8, $25, $25
+</span></span><span class="line"><span class="cl">sub $14, $8, $21
+</span></span><span class="line"><span class="cl">add $2, $0, $23
+</span></span><span class="line"><span class="cl">sw $11, 6292($2)
+</span></span><span class="line"><span class="cl">sub $26, $15, $22
+</span></span><span class="line"><span class="cl">lui $26, 0xffff
+</span></span><span class="line"><span class="cl">ori $26, $26, 0xdc99
+</span></span><span class="line"><span class="cl">sw $30, 9203($26)
+</span></span><span class="line"><span class="cl">ori $15, $10, 0xf39a
+</span></span><span class="line"><span class="cl">add $7, $15, $11
+</span></span><span class="line"><span class="cl">lw $29, 16775($4)
+</span></span><span class="line"><span class="cl">add $4, $29, $3
+</span></span><span class="line"><span class="cl">ori $30, $4, 0x4671
+</span></span><span class="line"><span class="cl">lui $30, 0x0
+</span></span><span class="line"><span class="cl">ori $30, $30, 0xdcb
+</span></span><span class="line"><span class="cl">sw $15, 4197($30)
+</span></span><span class="line"><span class="cl">lui $21, 0x9d71
+</span></span><span class="line"><span class="cl">ori $21, $21, 0xa95c
+</span></span><span class="line"><span class="cl">ori $10, $14, 0x30e
+</span></span><span class="line"><span class="cl">add $14, $10, $23
+</span></span><span class="line"><span class="cl">ori $16, $18, 0xc89d
+</span></span><span class="line"><span class="cl">lui $16, 0x0
+</span></span><span class="line"><span class="cl">ori $16, $16, 0x1c90
+</span></span><span class="line"><span class="cl">sw $14, -3088($16)
+</span></span><span class="line"><span class="cl">lui $9, 0x0
+</span></span><span class="line"><span class="cl">ori $9, $9, 0x4084
+</span></span><span class="line"><span class="cl">lw $16, -4756($9)
+</span></span><span class="line"><span class="cl">lw $27, 9268($16)
+</span></span><span class="line"><span class="cl">add $1, $24, $27
+</span></span><span class="line"><span class="cl">lui $1, 0xffff
+</span></span><span class="line"><span class="cl">ori $1, $1, 0xc27c
+</span></span><span class="line"><span class="cl">sw $14, 24332($1)
+</span></span><span class="line"><span class="cl">sub $2, $7, $0
+</span></span><span class="line"><span class="cl">add $14, $2, $3
+</span></span><span class="line"><span class="cl">lui $6, 0x4438
+</span></span><span class="line"><span class="cl">lui $6, 0x0
+</span></span><span class="line"><span class="cl">ori $6, $6, 0x57ed
+</span></span><span class="line"><span class="cl">lw $6, -19161($6)
+</span></span><span class="line"><span class="cl">lui $21, 0x0
+</span></span><span class="line"><span class="cl">ori $21, $21, 0x8bbb
+</span></span><span class="line"><span class="cl">lw $8, -30023($21)
+</span></span><span class="line"><span class="cl">add $20, $12, $8
+</span></span><span class="line"><span class="cl">lw $13, 12044($23)
+</span></span><span class="line"><span class="cl">sw $8, 2608($13)
+</span></span><span class="line"><span class="cl">add $27, $18, $2
+</span></span><span class="line"><span class="cl">lui $27, 0x0
+</span></span><span class="line"><span class="cl">ori $27, $27, 0x82e6
+</span></span><span class="line"><span class="cl">sw $5, -32138($27)
+</span></span><span class="line"><span class="cl">ori $21, $4, 0xf7a8
+</span></span><span class="line"><span class="cl">add $3, $21, $29
+</span></span><span class="line"><span class="cl">ori $27, $6, 0x5265
+</span></span><span class="line"><span class="cl">lw $12, -12269($27)
+</span></span><span class="line"><span class="cl">lw $25, 6652($28)
+</span></span><span class="line"><span class="cl">lw $25, 5164($25)
+</span></span><span class="line"><span class="cl">sub $0, $1, $5
+</span></span><span class="line"><span class="cl">sub $31, $0, $0
+</span></span><span class="line"><span class="cl">ori $6, $6, 0x8e4f
+</span></span><span class="line"><span class="cl">ori $7, $6, 0xdf1a
+</span></span><span class="line"><span class="cl">lui $14, 0x0
+</span></span><span class="line"><span class="cl">ori $14, $14, 0x80f5
+</span></span><span class="line"><span class="cl">lw $20, -26157($14)
+</span></span><span class="line"><span class="cl">sub $23, $20, $15
+</span></span><span class="line"><span class="cl">ori $1, $29, 0x8cc7
+</span></span><span class="line"><span class="cl">sub $25, $25, $1
+</span></span><span class="line"><span class="cl">lui $25, 0x0
+</span></span><span class="line"><span class="cl">ori $25, $25, 0x7349
+</span></span><span class="line"><span class="cl">lw $23, -25445($25)
+</span></span><span class="line"><span class="cl">sw $5, 10556($23)
+</span></span><span class="line"><span class="cl">add $27, $11, $14
+</span></span><span class="line"><span class="cl">lui $27, 0xffff
+</span></span><span class="line"><span class="cl">ori $27, $27, 0xc6da
+</span></span><span class="line"><span class="cl">sw $3, 15294($27)
+</span></span><span class="line"><span class="cl">lui $21, 0x0
+</span></span><span class="line"><span class="cl">ori $21, $21, 0x5277
+</span></span><span class="line"><span class="cl">lw $17, -20019($21)
+</span></span><span class="line"><span class="cl">sw $10, 4848($17)
+</span></span><span class="line"><span class="cl">lui $5, 0x0
+</span></span><span class="line"><span class="cl">ori $5, $5, 0x1e3c
+</span></span><span class="line"><span class="cl">lw $26, -2648($5)
+</span></span><span class="line"><span class="cl">sw $8, 7872($26)
+</span></span><span class="line"><span class="cl">lw $12, -3168($5)
+</span></span><span class="line"><span class="cl">lw $30, 9028($12)
+</span></span><span class="line"><span class="cl">sub $30, $0, $16
+</span></span><span class="line"><span class="cl">lw $9, 5424($30)
+</span></span><span class="line"><span class="cl">add $6, $1, $25
+</span></span><span class="line"><span class="cl">ori $8, $6, 0x85db
+</span></span><span class="line"><span class="cl">ori $11, $9, 0xc1dc
+</span></span><span class="line"><span class="cl">lui $11, 0xffff
+</span></span><span class="line"><span class="cl">ori $11, $11, 0xc67b
+</span></span><span class="line"><span class="cl">lw $16, 25045($11)
+</span></span><span class="line"><span class="cl">lw $1, 4176($29)
+</span></span><span class="line"><span class="cl">sw $10, 3932($1)
+</span></span><span class="line"><span class="cl">lui $8, 0x0
+</span></span><span class="line"><span class="cl">ori $8, $8, 0x3837
+</span></span><span class="line"><span class="cl">lw $3, -13239($8)
+</span></span><span class="line"><span class="cl">ori $20, $3, 0x204f
+</span></span><span class="line"><span class="cl">lui $9, 0x49ec
+</span></span><span class="line"><span class="cl">ori $10, $9, 0x1908
+</span></span><span class="line"><span class="cl">sub $28, $10, $22
+</span></span><span class="line"><span class="cl">lui $28, 0x0
+</span></span><span class="line"><span class="cl">ori $28, $28, 0x5d96
+</span></span><span class="line"><span class="cl">sw $1, -23914($28)
+</span></span><span class="line"><span class="cl">add $14, $14, $14
+</span></span><span class="line"><span class="cl">lui $14, 0x0
+</span></span><span class="line"><span class="cl">ori $14, $14, 0xc26
+</span></span><span class="line"><span class="cl">sw $30, 8546($14)
+</span></span><span class="line"><span class="cl">lw $15, 1880($29)
+</span></span><span class="line"><span class="cl">sw $2, 11704($15)
+</span></span><span class="line"><span class="cl">lui $6, 0x0
+</span></span><span class="line"><span class="cl">ori $6, $6, 0x3adc
+</span></span><span class="line"><span class="cl">lw $26, -13384($6)
+</span></span><span class="line"><span class="cl">ori $20, $26, 0x57f5
+</span></span><span class="line"><span class="cl">sub $2, $13, $10
+</span></span><span class="line"><span class="cl">lui $2, 0xffff
+</span></span><span class="line"><span class="cl">ori $2, $2, 0xf4aa
+</span></span><span class="line"><span class="cl">sw $3, 9282($2)
+</span></span><span class="line"><span class="cl">ori $4, $9, 0x1fc0
+</span></span><span class="line"><span class="cl">lui $4, 0x0
+</span></span><span class="line"><span class="cl">ori $4, $4, 0x79af
+</span></span><span class="line"><span class="cl">sw $31, -28999($4)
+</span></span><span class="line"><span class="cl">sub $21, $6, $9
+</span></span><span class="line"><span class="cl">sub $18, $21, $23
+</span></span><span class="line"><span class="cl">lui $30, 0x446b
+</span></span><span class="line"><span class="cl">sub $26, $30, $30
+</span></span><span class="line"><span class="cl">ori $26, $29, 0xad7c
+</span></span><span class="line"><span class="cl">add $23, $26, $18
+</span></span><span class="line"><span class="cl">sub $3, $18, $29
+</span></span><span class="line"><span class="cl">lui $3, 0x0
+</span></span><span class="line"><span class="cl">ori $3, $3, 0x19a
+</span></span><span class="line"><span class="cl">lw $10, 3938($3)
+</span></span><span class="line"><span class="cl">lw $8, 24005($11)
+</span></span><span class="line"><span class="cl">ori $18, $8, 0x7542
+</span></span><span class="line"><span class="cl">lw $10, 7486($3)
+</span></span><span class="line"><span class="cl">sub $21, $11, $10
+</span></span><span class="line"><span class="cl">add $19, $26, $23
+</span></span><span class="line"><span class="cl">sub $24, $20, $19
+</span></span><span class="line"><span class="cl">sub $10, $6, $29
+</span></span><span class="line"><span class="cl">sw $5, -13348($10)
+</span></span><span class="line"><span class="cl">lw $23, 7464($0)
+</span></span><span class="line"><span class="cl">sw $24, 2344($23)
+</span></span><span class="line"><span class="cl">ori $6, $0, 0xdc54
+</span></span><span class="line"><span class="cl">sub $30, $27, $6
+</span></span><span class="line"><span class="cl">lw $16, -22150($18)
+</span></span><span class="line"><span class="cl">sub $1, $25, $16
+</span></span><span class="line"><span class="cl">ori $28, $11, 0x4188
+</span></span><span class="line"><span class="cl">ori $14, $28, 0x4833
+</span></span><span class="line"><span class="cl">ori $31, $28, 0x7ab6
+</span></span><span class="line"><span class="cl">lw $25, 9913($31)
+</span></span><span class="line"><span class="cl">add $5, $3, $27
+</span></span><span class="line"><span class="cl">add $13, $5, $23
+</span></span><span class="line"><span class="cl">lui $4, 0x14d3
+</span></span><span class="line"><span class="cl">add $17, $4, $23
+</span></span><span class="line"><span class="cl">lw $28, 22305($28)
+</span></span><span class="line"><span class="cl">sw $11, 8660($28)
+</span></span><span class="line"><span class="cl">lui $9, 0x7113
+</span></span><span class="line"><span class="cl">lui $9, 0x0
+</span></span><span class="line"><span class="cl">ori $9, $9, 0x6a32
+</span></span><span class="line"><span class="cl">lw $15, -16134($9)
+</span></span><span class="line"><span class="cl">sub $29, $20, $15
+</span></span><span class="line"><span class="cl">ori $7, $29, 0x882
+</span></span><span class="line"><span class="cl">sub $7, $26, $22
+</span></span><span class="line"><span class="cl">lui $7, 0x0
+</span></span><span class="line"><span class="cl">ori $7, $7, 0x769
+</span></span><span class="line"><span class="cl">lw $12, 8615($7)
+</span></span><span class="line"><span class="cl">add $26, $27, $3
+</span></span><span class="line"><span class="cl">ori $7, $26, 0x95d2
+</span></span><span class="line"><span class="cl">ori $22, $9, 0x2bf5
+</span></span><span class="line"><span class="cl">sub $3, $22, $22
+</span></span><span class="line"><span class="cl">ori $31, $13, 0x83ab
+</span></span><span class="line"><span class="cl">ori $3, $31, 0x80fe
+</span></span><span class="line"><span class="cl">add $3, $21, $19
+</span></span><span class="line"><span class="cl">sub $21, $25, $3
+</span></span><span class="line"><span class="cl">lw $31, 9738($7)
+</span></span><span class="line"><span class="cl">ori $11, $31, 0xf617
+</span></span><span class="line"><span class="cl">lw $6, 13722($2)
+</span></span><span class="line"><span class="cl">add $15, $6, $24
+</span></span><span class="line"><span class="cl">lw $1, 3640($12)
+</span></span><span class="line"><span class="cl">sw $18, 6040($1)
+</span></span><span class="line"><span class="cl">sub $1, $5, $27
+</span></span><span class="line"><span class="cl">sw $19, 4058($1)
+</span></span><span class="line"><span class="cl">ori $18, $18, 0x9824
+</span></span><span class="line"><span class="cl">add $22, $5, $18
+</span></span><span class="line"><span class="cl">ori $14, $1, 0x3e72
+</span></span><span class="line"><span class="cl">sub $22, $14, $4
+</span></span><span class="line"><span class="cl">lui $28, 0x1272
+</span></span><span class="line"><span class="cl">lui $28, 0xffff
+</span></span><span class="line"><span class="cl">ori $28, $28, 0xf9ba
+</span></span><span class="line"><span class="cl">lw $3, 5418($28)
+</span></span><span class="line"><span class="cl">lw $4, -23982($9)
+</span></span><span class="line"><span class="cl">add $1, $29, $4
+</span></span><span class="line"><span class="cl">ori $27, $21, 0x5ed1
+</span></span><span class="line"><span class="cl">sub $19, $21, $27
+</span></span><span class="line"><span class="cl">ori $31, $23, 0x4136
+</span></span><span class="line"><span class="cl">lw $9, -16370($31)
+</span></span><span class="line"><span class="cl">ori $15, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop0_start:
+</span></span><span class="line"><span class="cl">add $25, $4, $13
+</span></span><span class="line"><span class="cl">ori $18, $26, 0x2818
+</span></span><span class="line"><span class="cl">ori $21, $4, 0x541d
+</span></span><span class="line"><span class="cl">ori $9, $8, 0x39ea
+</span></span><span class="line"><span class="cl">add $13, $5, $11
+</span></span><span class="line"><span class="cl">sub $17, $10, $22
+</span></span><span class="line"><span class="cl">lui $11, 0x6e7
+</span></span><span class="line"><span class="cl">sub $17, $5, $26
+</span></span><span class="line"><span class="cl">lui $28, 0x3b1f
+</span></span><span class="line"><span class="cl">add $10, $7, $18
+</span></span><span class="line"><span class="cl">ori $2, $0, 0x1
+</span></span><span class="line"><span class="cl">add $15, $2, $15
+</span></span><span class="line"><span class="cl">ori $2, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $2, $15, label_loop0_end
+</span></span><span class="line"><span class="cl">ori $20, $22, 0xa747
+</span></span><span class="line"><span class="cl">jal label_loop0_start
+</span></span><span class="line"><span class="cl">sub $25, $23, $27
+</span></span><span class="line"><span class="cl">label_loop0_end:
+</span></span><span class="line"><span class="cl">ori $30, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop1_start:
+</span></span><span class="line"><span class="cl">add $16, $14, $8
+</span></span><span class="line"><span class="cl">ori $19, $8, 0x5009
+</span></span><span class="line"><span class="cl">sub $9, $26, $27
+</span></span><span class="line"><span class="cl">sub $3, $26, $8
+</span></span><span class="line"><span class="cl">ori $16, $18, 0xda38
+</span></span><span class="line"><span class="cl">lui $17, 0x94c5
+</span></span><span class="line"><span class="cl">sub $2, $21, $26
+</span></span><span class="line"><span class="cl">sub $28, $21, $28
+</span></span><span class="line"><span class="cl">add $18, $18, $0
+</span></span><span class="line"><span class="cl">ori $29, $15, 0x4bfa
+</span></span><span class="line"><span class="cl">ori $4, $0, 0x1
+</span></span><span class="line"><span class="cl">add $30, $4, $30
+</span></span><span class="line"><span class="cl">ori $4, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $4, $30, label_loop1_end
+</span></span><span class="line"><span class="cl">ori $28, $7, 0x382c
+</span></span><span class="line"><span class="cl">jal label_loop1_start
+</span></span><span class="line"><span class="cl">lui $0, 0x21ea
+</span></span><span class="line"><span class="cl">label_loop1_end:
+</span></span><span class="line"><span class="cl">ori $7, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop2_start:
+</span></span><span class="line"><span class="cl">add $20, $19, $23
+</span></span><span class="line"><span class="cl">add $3, $26, $17
+</span></span><span class="line"><span class="cl">lui $2, 0x83c7
+</span></span><span class="line"><span class="cl">sub $5, $4, $17
+</span></span><span class="line"><span class="cl">lui $10, 0x4233
+</span></span><span class="line"><span class="cl">lui $3, 0xffa1
+</span></span><span class="line"><span class="cl">add $1, $28, $20
+</span></span><span class="line"><span class="cl">add $20, $27, $29
+</span></span><span class="line"><span class="cl">sub $28, $20, $22
+</span></span><span class="line"><span class="cl">add $18, $25, $26
+</span></span><span class="line"><span class="cl">ori $8, $0, 0x1
+</span></span><span class="line"><span class="cl">add $7, $8, $7
+</span></span><span class="line"><span class="cl">ori $8, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $8, $7, label_loop2_end
+</span></span><span class="line"><span class="cl">add $10, $29, $14
+</span></span><span class="line"><span class="cl">jal label_loop2_start
+</span></span><span class="line"><span class="cl">sub $19, $4, $24
+</span></span><span class="line"><span class="cl">label_loop2_end:
+</span></span><span class="line"><span class="cl">ori $4, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop3_start:
+</span></span><span class="line"><span class="cl">add $23, $0, $27
+</span></span><span class="line"><span class="cl">add $3, $3, $18
+</span></span><span class="line"><span class="cl">lui $16, 0x4e74
+</span></span><span class="line"><span class="cl">lui $30, 0x3825
+</span></span><span class="line"><span class="cl">lui $7, 0x7554
+</span></span><span class="line"><span class="cl">ori $15, $10, 0xbcb9
+</span></span><span class="line"><span class="cl">sub $17, $3, $28
+</span></span><span class="line"><span class="cl">add $14, $26, $29
+</span></span><span class="line"><span class="cl">lui $28, 0xafe6
+</span></span><span class="line"><span class="cl">sub $7, $16, $27
+</span></span><span class="line"><span class="cl">ori $5, $0, 0x1
+</span></span><span class="line"><span class="cl">add $4, $5, $4
+</span></span><span class="line"><span class="cl">ori $5, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $5, $4, label_loop3_end
+</span></span><span class="line"><span class="cl">add $1, $23, $13
+</span></span><span class="line"><span class="cl">jal label_loop3_start
+</span></span><span class="line"><span class="cl">ori $16, $26, 0xdcac
+</span></span><span class="line"><span class="cl">label_loop3_end:
+</span></span><span class="line"><span class="cl">ori $24, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop4_start:
+</span></span><span class="line"><span class="cl">sub $11, $29, $4
+</span></span><span class="line"><span class="cl">lui $5, 0x1d48
+</span></span><span class="line"><span class="cl">ori $17, $22, 0xce59
+</span></span><span class="line"><span class="cl">ori $9, $11, 0xa555
+</span></span><span class="line"><span class="cl">lui $21, 0x8d5e
+</span></span><span class="line"><span class="cl">sub $26, $8, $27
+</span></span><span class="line"><span class="cl">ori $23, $28, 0xcd62
+</span></span><span class="line"><span class="cl">add $17, $20, $15
+</span></span><span class="line"><span class="cl">lui $27, 0x4170
+</span></span><span class="line"><span class="cl">ori $13, $0, 0xd945
+</span></span><span class="line"><span class="cl">ori $12, $0, 0x1
+</span></span><span class="line"><span class="cl">add $24, $12, $24
+</span></span><span class="line"><span class="cl">ori $12, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $12, $24, label_loop4_end
+</span></span><span class="line"><span class="cl">lui $22, 0x2f5d
+</span></span><span class="line"><span class="cl">jal label_loop4_start
+</span></span><span class="line"><span class="cl">lui $3, 0x6f3
+</span></span><span class="line"><span class="cl">label_loop4_end:
+</span></span><span class="line"><span class="cl">ori $26, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop5_start:
+</span></span><span class="line"><span class="cl">ori $2, $13, 0x3771
+</span></span><span class="line"><span class="cl">sub $10, $18, $8
+</span></span><span class="line"><span class="cl">add $16, $25, $15
+</span></span><span class="line"><span class="cl">sub $15, $7, $27
+</span></span><span class="line"><span class="cl">ori $21, $16, 0x95a4
+</span></span><span class="line"><span class="cl">add $8, $10, $12
+</span></span><span class="line"><span class="cl">lui $13, 0x9590
+</span></span><span class="line"><span class="cl">add $3, $0, $0
+</span></span><span class="line"><span class="cl">ori $13, $11, 0x73f1
+</span></span><span class="line"><span class="cl">ori $25, $25, 0x311c
+</span></span><span class="line"><span class="cl">ori $24, $0, 0x1
+</span></span><span class="line"><span class="cl">add $26, $24, $26
+</span></span><span class="line"><span class="cl">ori $24, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $24, $26, label_loop5_end
+</span></span><span class="line"><span class="cl">add $27, $13, $15
+</span></span><span class="line"><span class="cl">jal label_loop5_start
+</span></span><span class="line"><span class="cl">lui $0, 0x92ad
+</span></span><span class="line"><span class="cl">label_loop5_end:
+</span></span><span class="line"><span class="cl">ori $20, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop6_start:
+</span></span><span class="line"><span class="cl">ori $4, $24, 0x523c
+</span></span><span class="line"><span class="cl">lui $1, 0x145b
+</span></span><span class="line"><span class="cl">ori $29, $29, 0x6507
+</span></span><span class="line"><span class="cl">sub $0, $5, $28
+</span></span><span class="line"><span class="cl">ori $6, $1, 0x4fb3
+</span></span><span class="line"><span class="cl">ori $12, $13, 0x6528
+</span></span><span class="line"><span class="cl">ori $7, $18, 0x31d9
+</span></span><span class="line"><span class="cl">lui $3, 0xe40e
+</span></span><span class="line"><span class="cl">add $3, $12, $18
+</span></span><span class="line"><span class="cl">ori $7, $6, 0xb59c
+</span></span><span class="line"><span class="cl">ori $10, $0, 0x1
+</span></span><span class="line"><span class="cl">add $20, $10, $20
+</span></span><span class="line"><span class="cl">ori $10, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $10, $20, label_loop6_end
+</span></span><span class="line"><span class="cl">sub $18, $5, $25
+</span></span><span class="line"><span class="cl">jal label_loop6_start
+</span></span><span class="line"><span class="cl">sub $3, $7, $27
+</span></span><span class="line"><span class="cl">label_loop6_end:
+</span></span><span class="line"><span class="cl">ori $15, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop7_start:
+</span></span><span class="line"><span class="cl">lui $20, 0x5d9
+</span></span><span class="line"><span class="cl">sub $18, $22, $13
+</span></span><span class="line"><span class="cl">ori $26, $24, 0x2d06
+</span></span><span class="line"><span class="cl">add $3, $25, $4
+</span></span><span class="line"><span class="cl">sub $17, $17, $2
+</span></span><span class="line"><span class="cl">lui $7, 0x2bca
+</span></span><span class="line"><span class="cl">sub $21, $28, $0
+</span></span><span class="line"><span class="cl">add $26, $12, $14
+</span></span><span class="line"><span class="cl">add $16, $18, $19
+</span></span><span class="line"><span class="cl">ori $23, $24, 0xfe57
+</span></span><span class="line"><span class="cl">ori $5, $0, 0x1
+</span></span><span class="line"><span class="cl">add $15, $5, $15
+</span></span><span class="line"><span class="cl">ori $5, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $5, $15, label_loop7_end
+</span></span><span class="line"><span class="cl">add $17, $28, $29
+</span></span><span class="line"><span class="cl">jal label_loop7_start
+</span></span><span class="line"><span class="cl">add $4, $11, $11
+</span></span><span class="line"><span class="cl">label_loop7_end:
+</span></span><span class="line"><span class="cl">ori $11, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop8_start:
+</span></span><span class="line"><span class="cl">add $7, $12, $9
+</span></span><span class="line"><span class="cl">ori $3, $30, 0xb2a2
+</span></span><span class="line"><span class="cl">ori $14, $23, 0xa143
+</span></span><span class="line"><span class="cl">add $28, $29, $8
+</span></span><span class="line"><span class="cl">ori $16, $2, 0x80bc
+</span></span><span class="line"><span class="cl">sub $25, $17, $9
+</span></span><span class="line"><span class="cl">lui $30, 0xb919
+</span></span><span class="line"><span class="cl">add $28, $17, $12
+</span></span><span class="line"><span class="cl">ori $7, $24, 0xaf9a
+</span></span><span class="line"><span class="cl">ori $26, $17, 0x23b0
+</span></span><span class="line"><span class="cl">ori $1, $0, 0x1
+</span></span><span class="line"><span class="cl">add $11, $1, $11
+</span></span><span class="line"><span class="cl">ori $1, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $1, $11, label_loop8_end
+</span></span><span class="line"><span class="cl">ori $20, $17, 0x222b
+</span></span><span class="line"><span class="cl">jal label_loop8_start
+</span></span><span class="line"><span class="cl">sub $10, $10, $16
+</span></span><span class="line"><span class="cl">label_loop8_end:
+</span></span><span class="line"><span class="cl">ori $26, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop9_start:
+</span></span><span class="line"><span class="cl">ori $21, $3, 0xef24
+</span></span><span class="line"><span class="cl">lui $17, 0x7a3a
+</span></span><span class="line"><span class="cl">lui $13, 0x4831
+</span></span><span class="line"><span class="cl">add $7, $22, $7
+</span></span><span class="line"><span class="cl">add $6, $15, $9
+</span></span><span class="line"><span class="cl">add $23, $6, $8
+</span></span><span class="line"><span class="cl">lui $21, 0xd67c
+</span></span><span class="line"><span class="cl">add $25, $14, $2
+</span></span><span class="line"><span class="cl">ori $29, $21, 0x657c
+</span></span><span class="line"><span class="cl">ori $11, $22, 0xcbfb
+</span></span><span class="line"><span class="cl">ori $12, $0, 0x1
+</span></span><span class="line"><span class="cl">add $26, $12, $26
+</span></span><span class="line"><span class="cl">ori $12, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $12, $26, label_loop9_end
+</span></span><span class="line"><span class="cl">lui $3, 0x9097
+</span></span><span class="line"><span class="cl">jal label_loop9_start
+</span></span><span class="line"><span class="cl">lui $21, 0xa88
+</span></span><span class="line"><span class="cl">label_loop9_end:
+</span></span><span class="line"><span class="cl">ori $24, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop10_start:
+</span></span><span class="line"><span class="cl">add $30, $16, $27
+</span></span><span class="line"><span class="cl">ori $13, $13, 0x5515
+</span></span><span class="line"><span class="cl">lui $27, 0x510
+</span></span><span class="line"><span class="cl">lui $25, 0xceea
+</span></span><span class="line"><span class="cl">sub $0, $10, $10
+</span></span><span class="line"><span class="cl">ori $10, $13, 0x7c3e
+</span></span><span class="line"><span class="cl">ori $13, $19, 0x596b
+</span></span><span class="line"><span class="cl">add $25, $13, $5
+</span></span><span class="line"><span class="cl">ori $17, $17, 0x88d6
+</span></span><span class="line"><span class="cl">lui $15, 0xf460
+</span></span><span class="line"><span class="cl">ori $20, $0, 0x1
+</span></span><span class="line"><span class="cl">add $24, $20, $24
+</span></span><span class="line"><span class="cl">ori $20, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $20, $24, label_loop10_end
+</span></span><span class="line"><span class="cl">lui $27, 0x5b72
+</span></span><span class="line"><span class="cl">jal label_loop10_start
+</span></span><span class="line"><span class="cl">add $4, $23, $29
+</span></span><span class="line"><span class="cl">label_loop10_end:
+</span></span><span class="line"><span class="cl">ori $15, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop11_start:
+</span></span><span class="line"><span class="cl">ori $20, $22, 0xe426
+</span></span><span class="line"><span class="cl">ori $8, $27, 0xf9c7
+</span></span><span class="line"><span class="cl">lui $3, 0x6cbe
+</span></span><span class="line"><span class="cl">lui $11, 0xa48b
+</span></span><span class="line"><span class="cl">add $6, $18, $7
+</span></span><span class="line"><span class="cl">sub $10, $3, $7
+</span></span><span class="line"><span class="cl">ori $12, $10, 0x19d4
+</span></span><span class="line"><span class="cl">add $22, $7, $29
+</span></span><span class="line"><span class="cl">lui $12, 0xd58f
+</span></span><span class="line"><span class="cl">lui $16, 0xa752
+</span></span><span class="line"><span class="cl">ori $28, $0, 0x1
+</span></span><span class="line"><span class="cl">add $15, $28, $15
+</span></span><span class="line"><span class="cl">ori $28, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $28, $15, label_loop11_end
+</span></span><span class="line"><span class="cl">add $25, $26, $17
+</span></span><span class="line"><span class="cl">jal label_loop11_start
+</span></span><span class="line"><span class="cl">sub $13, $9, $1
+</span></span><span class="line"><span class="cl">label_loop11_end:
+</span></span><span class="line"><span class="cl">ori $24, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop12_start:
+</span></span><span class="line"><span class="cl">lui $27, 0xf346
+</span></span><span class="line"><span class="cl">add $22, $18, $25
+</span></span><span class="line"><span class="cl">ori $3, $0, 0xa0c2
+</span></span><span class="line"><span class="cl">lui $2, 0x3836
+</span></span><span class="line"><span class="cl">ori $19, $21, 0xaa85
+</span></span><span class="line"><span class="cl">ori $1, $28, 0xb360
+</span></span><span class="line"><span class="cl">sub $4, $11, $21
+</span></span><span class="line"><span class="cl">sub $8, $27, $28
+</span></span><span class="line"><span class="cl">lui $30, 0x921c
+</span></span><span class="line"><span class="cl">sub $23, $4, $17
+</span></span><span class="line"><span class="cl">ori $9, $0, 0x1
+</span></span><span class="line"><span class="cl">add $24, $9, $24
+</span></span><span class="line"><span class="cl">ori $9, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $9, $24, label_loop12_end
+</span></span><span class="line"><span class="cl">sub $1, $30, $13
+</span></span><span class="line"><span class="cl">jal label_loop12_start
+</span></span><span class="line"><span class="cl">ori $21, $28, 0x212f
+</span></span><span class="line"><span class="cl">label_loop12_end:
+</span></span><span class="line"><span class="cl">ori $14, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop13_start:
+</span></span><span class="line"><span class="cl">sub $10, $23, $6
+</span></span><span class="line"><span class="cl">sub $1, $1, $24
+</span></span><span class="line"><span class="cl">lui $24, 0x5b3e
+</span></span><span class="line"><span class="cl">lui $26, 0x6b57
+</span></span><span class="line"><span class="cl">ori $1, $23, 0x7c5d
+</span></span><span class="line"><span class="cl">add $13, $0, $4
+</span></span><span class="line"><span class="cl">add $2, $15, $18
+</span></span><span class="line"><span class="cl">sub $15, $30, $15
+</span></span><span class="line"><span class="cl">ori $10, $10, 0x29
+</span></span><span class="line"><span class="cl">sub $27, $26, $19
+</span></span><span class="line"><span class="cl">ori $28, $0, 0x1
+</span></span><span class="line"><span class="cl">add $14, $28, $14
+</span></span><span class="line"><span class="cl">ori $28, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $28, $14, label_loop13_end
+</span></span><span class="line"><span class="cl">sub $5, $24, $7
+</span></span><span class="line"><span class="cl">jal label_loop13_start
+</span></span><span class="line"><span class="cl">add $23, $19, $27
+</span></span><span class="line"><span class="cl">label_loop13_end:
+</span></span><span class="line"><span class="cl">ori $17, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop14_start:
+</span></span><span class="line"><span class="cl">ori $5, $26, 0xffd8
+</span></span><span class="line"><span class="cl">add $6, $20, $3
+</span></span><span class="line"><span class="cl">ori $13, $9, 0xf87f
+</span></span><span class="line"><span class="cl">ori $29, $19, 0xed0c
+</span></span><span class="line"><span class="cl">ori $28, $14, 0xd79e
+</span></span><span class="line"><span class="cl">add $10, $30, $5
+</span></span><span class="line"><span class="cl">sub $25, $7, $3
+</span></span><span class="line"><span class="cl">sub $12, $13, $13
+</span></span><span class="line"><span class="cl">add $18, $27, $9
+</span></span><span class="line"><span class="cl">lui $3, 0x771a
+</span></span><span class="line"><span class="cl">ori $22, $0, 0x1
+</span></span><span class="line"><span class="cl">add $17, $22, $17
+</span></span><span class="line"><span class="cl">ori $22, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $22, $17, label_loop14_end
+</span></span><span class="line"><span class="cl">add $6, $30, $8
+</span></span><span class="line"><span class="cl">jal label_loop14_start
+</span></span><span class="line"><span class="cl">ori $21, $8, 0x110e
+</span></span><span class="line"><span class="cl">label_loop14_end:
+</span></span><span class="line"><span class="cl">ori $22, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop15_start:
+</span></span><span class="line"><span class="cl">sub $5, $9, $29
+</span></span><span class="line"><span class="cl">add $26, $12, $13
+</span></span><span class="line"><span class="cl">lui $21, 0x9f99
+</span></span><span class="line"><span class="cl">sub $13, $16, $21
+</span></span><span class="line"><span class="cl">ori $7, $28, 0x3abd
+</span></span><span class="line"><span class="cl">add $2, $6, $4
+</span></span><span class="line"><span class="cl">sub $20, $21, $25
+</span></span><span class="line"><span class="cl">sub $26, $3, $10
+</span></span><span class="line"><span class="cl">sub $9, $18, $30
+</span></span><span class="line"><span class="cl">sub $30, $6, $1
+</span></span><span class="line"><span class="cl">ori $14, $0, 0x1
+</span></span><span class="line"><span class="cl">add $22, $14, $22
+</span></span><span class="line"><span class="cl">ori $14, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $14, $22, label_loop15_end
+</span></span><span class="line"><span class="cl">sub $7, $23, $7
+</span></span><span class="line"><span class="cl">jal label_loop15_start
+</span></span><span class="line"><span class="cl">lui $26, 0xc44
+</span></span><span class="line"><span class="cl">label_loop15_end:
+</span></span><span class="line"><span class="cl">ori $16, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop16_start:
+</span></span><span class="line"><span class="cl">lui $26, 0x199c
+</span></span><span class="line"><span class="cl">sub $27, $25, $27
+</span></span><span class="line"><span class="cl">ori $21, $4, 0xcd10
+</span></span><span class="line"><span class="cl">sub $25, $4, $12
+</span></span><span class="line"><span class="cl">ori $28, $2, 0xae2a
+</span></span><span class="line"><span class="cl">add $18, $28, $9
+</span></span><span class="line"><span class="cl">lui $29, 0xa2fc
+</span></span><span class="line"><span class="cl">ori $30, $10, 0x203d
+</span></span><span class="line"><span class="cl">add $27, $25, $28
+</span></span><span class="line"><span class="cl">sub $29, $4, $30
+</span></span><span class="line"><span class="cl">ori $1, $0, 0x1
+</span></span><span class="line"><span class="cl">add $16, $1, $16
+</span></span><span class="line"><span class="cl">ori $1, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $1, $16, label_loop16_end
+</span></span><span class="line"><span class="cl">add $25, $14, $10
+</span></span><span class="line"><span class="cl">jal label_loop16_start
+</span></span><span class="line"><span class="cl">sub $21, $25, $13
+</span></span><span class="line"><span class="cl">label_loop16_end:
+</span></span><span class="line"><span class="cl">ori $10, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop17_start:
+</span></span><span class="line"><span class="cl">lui $22, 0x7b3e
+</span></span><span class="line"><span class="cl">ori $14, $7, 0xb353
+</span></span><span class="line"><span class="cl">add $15, $22, $26
+</span></span><span class="line"><span class="cl">lui $29, 0xa6f1
+</span></span><span class="line"><span class="cl">add $3, $11, $8
+</span></span><span class="line"><span class="cl">sub $28, $2, $13
+</span></span><span class="line"><span class="cl">sub $2, $21, $14
+</span></span><span class="line"><span class="cl">ori $15, $20, 0x1584
+</span></span><span class="line"><span class="cl">lui $29, 0x4b97
+</span></span><span class="line"><span class="cl">lui $26, 0x871e
+</span></span><span class="line"><span class="cl">ori $1, $0, 0x1
+</span></span><span class="line"><span class="cl">add $10, $1, $10
+</span></span><span class="line"><span class="cl">ori $1, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $1, $10, label_loop17_end
+</span></span><span class="line"><span class="cl">lui $19, 0x5b66
+</span></span><span class="line"><span class="cl">jal label_loop17_start
+</span></span><span class="line"><span class="cl">ori $21, $28, 0x4d3e
+</span></span><span class="line"><span class="cl">label_loop17_end:
+</span></span><span class="line"><span class="cl">ori $3, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop18_start:
+</span></span><span class="line"><span class="cl">lui $14, 0x9e71
+</span></span><span class="line"><span class="cl">lui $25, 0xea37
+</span></span><span class="line"><span class="cl">ori $0, $27, 0x7a34
+</span></span><span class="line"><span class="cl">lui $24, 0xed58
+</span></span><span class="line"><span class="cl">ori $28, $9, 0x70e0
+</span></span><span class="line"><span class="cl">lui $12, 0x2e80
+</span></span><span class="line"><span class="cl">sub $29, $16, $27
+</span></span><span class="line"><span class="cl">add $16, $4, $7
+</span></span><span class="line"><span class="cl">ori $5, $18, 0xe505
+</span></span><span class="line"><span class="cl">add $7, $23, $0
+</span></span><span class="line"><span class="cl">ori $2, $0, 0x1
+</span></span><span class="line"><span class="cl">add $3, $2, $3
+</span></span><span class="line"><span class="cl">ori $2, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $2, $3, label_loop18_end
+</span></span><span class="line"><span class="cl">add $11, $25, $5
+</span></span><span class="line"><span class="cl">jal label_loop18_start
+</span></span><span class="line"><span class="cl">add $14, $15, $30
+</span></span><span class="line"><span class="cl">label_loop18_end:
+</span></span><span class="line"><span class="cl">ori $17, $0, 0x0
+</span></span><span class="line"><span class="cl">label_loop19_start:
+</span></span><span class="line"><span class="cl">lui $6, 0xe6db
+</span></span><span class="line"><span class="cl">lui $30, 0xc107
+</span></span><span class="line"><span class="cl">add $1, $13, $3
+</span></span><span class="line"><span class="cl">ori $22, $16, 0x5a11
+</span></span><span class="line"><span class="cl">add $2, $16, $12
+</span></span><span class="line"><span class="cl">ori $5, $23, 0x92d7
+</span></span><span class="line"><span class="cl">add $10, $7, $29
+</span></span><span class="line"><span class="cl">lui $21, 0x945d
+</span></span><span class="line"><span class="cl">add $8, $2, $10
+</span></span><span class="line"><span class="cl">ori $8, $16, 0xe391
+</span></span><span class="line"><span class="cl">ori $9, $0, 0x1
+</span></span><span class="line"><span class="cl">add $17, $9, $17
+</span></span><span class="line"><span class="cl">ori $9, $0, 0x3
+</span></span><span class="line"><span class="cl">beq $9, $17, label_loop19_end
+</span></span><span class="line"><span class="cl">lui $21, 0xb1ed
+</span></span><span class="line"><span class="cl">jal label_loop19_start
+</span></span><span class="line"><span class="cl">add $3, $18, $19
+</span></span><span class="line"><span class="cl">label_loop19_end:
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/co-p7-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P7 - Verilog 流水线 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/co-p6-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P6 - Verilog 流水线 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/co-p4-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P4 - Verilog 单周期 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/co-p3-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P3 - Logisim 单周期 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Taichuan Li
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.d9dec133efdf60a3628a485d38b69336769aaba023a8725f406793e47c75858f.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

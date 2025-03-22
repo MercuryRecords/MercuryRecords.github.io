@@ -1,0 +1,2977 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="计组实验P7设计文档">
+<meta name="keywords" content="CO,, 设计文档"><title>CO | P7 - Verilog 流水线 CPU 设计文档</title>
+
+<link rel='canonical' href='http://localhost:1313/p/co-p7-doc/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="CO | P7 - Verilog 流水线 CPU 设计文档">
+<meta property='og:description' content="计组实验P7设计文档">
+<meta property='og:url' content='http://localhost:1313/p/co-p7-doc/'>
+<meta property='og:site_name' content='v1tamin&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-12-03T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-12-03T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="CO | P7 - Verilog 流水线 CPU 设计文档">
+<meta name="twitter:description" content="计组实验P7设计文档">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/avatar_hu_aefa2326ce591fb8.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤠</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">v1tamin&#39;s Blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/MercuryRecords'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#cal_rr">cal_rr</a></li>
+        <li><a href="#cal_ri--lui">cal_ri + lui</a></li>
+        <li><a href="#load--store">load + store</a></li>
+        <li><a href="#mult-div-mf-mt">mult div mf mt</a></li>
+        <li><a href="#jump">jump</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#取指令单元ifu">取指令单元IFU</a>
+      <ol>
+        <li><a href="#端口说明">端口说明</a></li>
+        <li><a href="#功能定义">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#d级流水线寄存器">D级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#控制器ctrl">控制器CTRL</a>
+      <ol>
+        <li><a href="#端口说明-1">端口说明</a></li>
+        <li><a href="#功能定义-1">功能定义</a></li>
+        <li><a href="#控制信号对应">控制信号对应</a></li>
+      </ol>
+    </li>
+    <li><a href="#d级转发接收端选择器tr_grf_data">D级转发接收端选择器TR_GRF_Data</a>
+      <ol>
+        <li><a href="#端口说明-2">端口说明</a></li>
+      </ol>
+    </li>
+    <li><a href="#寄存器堆grf">寄存器堆GRF</a>
+      <ol>
+        <li><a href="#端口说明-3">端口说明</a></li>
+        <li><a href="#功能定义-2">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#扩展单元ext">扩展单元EXT</a>
+      <ol>
+        <li><a href="#端口说明-4">端口说明</a></li>
+        <li><a href="#功能定义-3">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#e级流水线寄存器">E级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#e级转发接收端选择器tr_alu_src">E级转发接收端选择器TR_ALU_SRC</a>
+      <ol>
+        <li><a href="#端口说明-5">端口说明</a></li>
+      </ol>
+    </li>
+    <li><a href="#寄存器写入地址选择器wr_mux">寄存器写入地址选择器WR_MUX</a></li>
+    <li><a href="#alu输入源2选择器alusrc_mux">ALU输入源2选择器ALUSRC_MUX</a></li>
+    <li><a href="#算数运算单元alu">算数运算单元ALU</a>
+      <ol>
+        <li><a href="#端口说明-6">端口说明</a></li>
+        <li><a href="#功能定义-4">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#乘除运算单元md_cal">乘除运算单元MD_CAL</a>
+      <ol>
+        <li><a href="#端口说明-7">端口说明</a></li>
+        <li><a href="#功能定义-5">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#e级转发输出端选择器wrd_mux">E级转发输出端选择器WRD_MUX</a></li>
+    <li><a href="#m级流水线寄存器">M级流水线寄存器</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#数据扩展模块load_ext">数据扩展模块LOAD_EXT</a>
+      <ol>
+        <li><a href="#端口说明-8">端口说明</a></li>
+        <li><a href="#功能定义-6">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#字节使能模块byte_en">字节使能模块BYTE_EN</a>
+      <ol>
+        <li><a href="#端口说明-9">端口说明</a></li>
+        <li><a href="#功能定义-7">功能定义</a></li>
+      </ol>
+    </li>
+    <li><a href="#w级流水线寄存器">W级流水线寄存器</a></li>
+    <li><a href="#cp0协处理器">CP0协处理器</a>
+      <ol>
+        <li><a href="#端口说明-10">端口说明</a></li>
+        <li><a href="#功能定义-8">功能定义</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#宏定义">宏定义</a></li>
+    <li><a href="#阻塞转发单元">阻塞转发单元</a>
+      <ol>
+        <li><a href="#hint">hint</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#端口说明-11">端口说明</a></li>
+    <li><a href="#功能定义-9">功能定义</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/co/" >
+                CO
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/co-p7-doc/">CO | P7 - Verilog 流水线 CPU 设计文档</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            计组实验P7设计文档
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 03, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 11 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>计组实验 P7 设计文档</p>
+<ul>
+<li>全力转发优化：Tuse进行区分</li>
+</ul>
+<h3 id="cal_rr">cal_rr
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>add</th>
+          <th>sub</th>
+          <th>and</th>
+          <th>or</th>
+          <th>slt</th>
+          <th>sltu</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>func</td>
+          <td>10 0000</td>
+          <td>10 0010</td>
+          <td>10 0100</td>
+          <td>10 0101</td>
+          <td>10 1010</td>
+          <td>10 1011</td>
+      </tr>
+      <tr>
+          <td>op</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+      </tr>
+      <tr>
+          <td>TargetReg</td>
+          <td>D</td>
+          <td>D</td>
+          <td>D</td>
+          <td>D</td>
+          <td>D</td>
+          <td>D</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>ALU</td>
+          <td>ALU</td>
+          <td>ALU</td>
+          <td>ALU</td>
+          <td>ALU</td>
+          <td>ALU</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>NPCop</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>add</td>
+          <td>sub</td>
+          <td>and</td>
+          <td>or</td>
+          <td>slt</td>
+          <td>sltu</td>
+      </tr>
+      <tr>
+          <td>Tuse_rs</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>Tuse_rt</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="cal_ri--lui">cal_ri + lui
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>addi</th>
+          <th>andi</th>
+          <th>ori</th>
+          <th>lui</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>op</td>
+          <td>00 1000</td>
+          <td>00 1100</td>
+          <td>00 1101</td>
+          <td>00 1111</td>
+      </tr>
+      <tr>
+          <td>TargetReg</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>I</td>
+          <td>I</td>
+          <td>I</td>
+          <td>I</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>ALU</td>
+          <td>ALU</td>
+          <td>ALU</td>
+          <td>ALU</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>NPCop</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>add</td>
+          <td>and</td>
+          <td>or</td>
+          <td>lui</td>
+      </tr>
+      <tr>
+          <td>Tuse_rs</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Tuse_rt</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="load--store">load + store
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>lb</th>
+          <th>lh</th>
+          <th>lw</th>
+          <th>sb</th>
+          <th>sh</th>
+          <th>sw</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>op</td>
+          <td>10 0000</td>
+          <td>10 0001</td>
+          <td>10 0011</td>
+          <td>10 1000</td>
+          <td>10 1001</td>
+          <td>10 1011</td>
+      </tr>
+      <tr>
+          <td>TargetReg</td>
+          <td>D</td>
+          <td>D</td>
+          <td>D</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+          <td>T</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>MEM</td>
+          <td>MEM</td>
+          <td>MEM</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>NPCop</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>add</td>
+          <td>add</td>
+          <td>add</td>
+          <td>add</td>
+          <td>add</td>
+          <td>add</td>
+      </tr>
+      <tr>
+          <td>Tuse_rs</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>Tuse_rt</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>2</td>
+          <td>2</td>
+          <td>2</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>2</td>
+          <td>2</td>
+          <td>2</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="mult-div-mf-mt">mult div mf mt
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>mult</th>
+          <th>div</th>
+          <th>mf</th>
+          <th>mt</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TargetReg</td>
+          <td>x</td>
+          <td>x</td>
+          <td>D</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>x</td>
+          <td>x</td>
+          <td>MD</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>NPCop</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+          <td>PCPlus4</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Tuse_rs</td>
+          <td>1</td>
+          <td>1</td>
+          <td>x</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>Tuse_rt</td>
+          <td>1</td>
+          <td>1</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>x</td>
+          <td>x</td>
+          <td>1</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>start</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>注意设置MDOp</p>
+<h3 id="jump">jump
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>beq</th>
+          <th>bne</th>
+          <th>jal</th>
+          <th>jr</th>
+          <th>j</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TargetReg</td>
+          <td>x</td>
+          <td>x</td>
+          <td>31</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>x</td>
+          <td>x</td>
+          <td>PCPlus8</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>NPCop</td>
+          <td>beq</td>
+          <td>bne</td>
+          <td>Jimm26</td>
+          <td>JReg</td>
+          <td>Jimm26</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Tuse_rs</td>
+          <td>0</td>
+          <td>0</td>
+          <td>x</td>
+          <td>0</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Tuse_rt</td>
+          <td>0</td>
+          <td>0</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>x</td>
+          <td>x</td>
+          <td>0</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>优化思路：lui提前处理，TnewE=0；对sw区分Tuse</p>
+<p>处理器应支持如下指令集：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="n">nop</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="k">and</span><span class="p">,</span> <span class="k">or</span><span class="p">,</span> <span class="n">slt</span><span class="p">,</span> <span class="n">sltu</span><span class="p">,</span> <span class="n">lui</span>
+</span></span><span class="line"><span class="cl"><span class="n">addi</span><span class="p">,</span> <span class="n">andi</span><span class="p">,</span> <span class="n">ori</span>
+</span></span><span class="line"><span class="cl"><span class="n">lb</span><span class="p">,</span> <span class="n">lh</span><span class="p">,</span> <span class="n">lw</span><span class="p">,</span> <span class="n">sb</span><span class="p">,</span> <span class="n">sh</span><span class="p">,</span> <span class="n">sw</span>
+</span></span><span class="line"><span class="cl"><span class="n">mult</span><span class="p">,</span> <span class="n">multu</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">divu</span><span class="p">,</span> <span class="n">mfhi</span><span class="p">,</span> <span class="n">mflo</span><span class="p">,</span> <span class="n">mthi</span><span class="p">,</span> <span class="n">mtlo</span>
+</span></span><span class="line"><span class="cl"><span class="n">beq</span><span class="p">,</span> <span class="n">bne</span><span class="p">,</span> <span class="n">jal</span><span class="p">,</span> <span class="n">jr</span>
+</span></span><span class="line"><span class="cl"><span class="n">mfc0</span><span class="p">,</span> <span class="n">mtc0</span><span class="p">,</span> <span class="n">eret</span><span class="p">,</span> <span class="n">syscall</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/images/posts/CO/p5-1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h1 id="一设计草稿">一、设计草稿
+</h1><h1 id="1-f级">1. F级
+</h1><h2 id="取指令单元ifu">取指令单元IFU
+</h2><p>含有次地址计算单元NPC和程序计数器PC；IM 容量为 16KiB（4096 × 32bit）,在mips_tb.v中实现</p>
+<h3 id="端口说明">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>Req</td>
+          <td>I</td>
+          <td><strong>P7新增</strong>：Req信号，进入处理程序请求</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>eret_D</td>
+          <td>I</td>
+          <td><strong>P7新增</strong>：指示D级指令是否为eret</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>EPCOut[31:0]</td>
+          <td>I</td>
+          <td><strong>P7新增</strong>：EPC的值</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效，置pc为0x0000_3000</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>stallF</td>
+          <td>I</td>
+          <td>阻塞控制信号</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>pcF[31:0]</td>
+          <td>I</td>
+          <td>F级指令地址</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>pcD[31:0]</td>
+          <td>I</td>
+          <td>D级指令地址</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>offset[15:0]</td>
+          <td>I</td>
+          <td>16位立即数</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>imm26[25:0]</td>
+          <td>I</td>
+          <td>j、jal指令使用的26位立即数</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>NPCop[2:0]</td>
+          <td>I</td>
+          <td>NPC行为控制信号</td>
+      </tr>
+      <tr>
+          <td>12</td>
+          <td>TR_GRF_RD1[31:0]</td>
+          <td>I</td>
+          <td>寄存器rs的值，可用于beq相等判断和jr指令使用</td>
+      </tr>
+      <tr>
+          <td>13</td>
+          <td>TR_GRF_RD2[31:0]</td>
+          <td>I</td>
+          <td>寄存器rt的值，可用于beq相等判断</td>
+      </tr>
+      <tr>
+          <td>14</td>
+          <td>NPCoutput[31:0]</td>
+          <td>O</td>
+          <td>下一条指令的地址</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义">功能定义
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>复位</td>
+          <td><strong>同步</strong>复位，置pc为0x0000_3000</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>更新</td>
+          <td>在时钟上升沿，更新pc的值为NPCoutput</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="d级流水线寄存器">D级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>stallD</td>
+          <td>I</td>
+          <td>阻塞控制信号</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxF</td>
+          <td>I</td>
+          <td>需要流水的F级数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>xxD</td>
+          <td>O</td>
+          <td>D级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="2-d级">2. D级
+</h1><h2 id="控制器ctrl">控制器CTRL
+</h2><p>分布式译码形式的控制器，实例化为ctrl_d</p>
+<h3 id="端口说明-1">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>func[5:0]</td>
+          <td>I</td>
+          <td>指令的5-0位，对R型指令进行进一步判别</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>Opcode[5:0]</td>
+          <td>I</td>
+          <td>指令的31-26位</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>targetRegSel[1:0]</td>
+          <td>O</td>
+          <td>写入寄存器指示信号，控制写入rt、rd、31</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>aluSrc</td>
+          <td>O</td>
+          <td>ALU输入选择信号，高电平时为ImmExtended，低电平时为RD2</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>mem2Reg[1:0]</td>
+          <td>O</td>
+          <td>写入寄存器堆数据选择信号，控制从DM、aluResult、PC+8写入</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>regWrite</td>
+          <td>O</td>
+          <td>高电平时寄存器堆写入使能，低电平时寄存器堆不可写入</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>memWrite</td>
+          <td>O</td>
+          <td>高电平时DM写入使能，低电平时DM不可写入</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>NPCop[2:0]</td>
+          <td>O</td>
+          <td>控制NPC行为</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>ExtOp</td>
+          <td>O</td>
+          <td>高电平时EXT进行符号拓展，低电平时EXT进行0拓展</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>ALUop[3:0]</td>
+          <td>O</td>
+          <td>ALU运算控制信号</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>Tuse</td>
+          <td>O</td>
+          <td>指示当前指令的Tuse，若有两个不同的值，输出较小值</td>
+      </tr>
+      <tr>
+          <td>12</td>
+          <td>TnewE</td>
+          <td>O</td>
+          <td>指示当前指令在E级的Tnew</td>
+      </tr>
+      <tr>
+          <td>13</td>
+          <td>start</td>
+          <td>O</td>
+          <td>指示乘除模块计算指令的开始信号</td>
+      </tr>
+      <tr>
+          <td>14</td>
+          <td>MDOp[3:0]</td>
+          <td>O</td>
+          <td>指示乘除模块的行为</td>
+      </tr>
+      <tr>
+          <td>15</td>
+          <td>syscall</td>
+          <td>O</td>
+          <td>指示当前指令是否为syscall</td>
+      </tr>
+      <tr>
+          <td>16</td>
+          <td>RI</td>
+          <td>O</td>
+          <td>指示当前指令产生RI错误</td>
+      </tr>
+      <tr>
+          <td>17</td>
+          <td>isOvInstr</td>
+          <td>O</td>
+          <td>指示当前指令是否关联Ov错误</td>
+      </tr>
+      <tr>
+          <td>18</td>
+          <td>CP0WriteEn</td>
+          <td>O</td>
+          <td>CP0写使能信号</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-1">功能定义
+</h3><p>根据func和Opcode解析指令类型，进而构建数据通路</p>
+<h3 id="控制信号对应">控制信号对应
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Ins</th>
+          <th>add</th>
+          <th>sub</th>
+          <th>ori</th>
+          <th>lui</th>
+          <th>lw</th>
+          <th>sw</th>
+          <th>beq</th>
+          <th>jal</th>
+          <th>jr</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>func</td>
+          <td>10 0000</td>
+          <td>10 0010</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>001000</td>
+      </tr>
+      <tr>
+          <td>op</td>
+          <td>00 0000</td>
+          <td>00 0000</td>
+          <td>00 1101</td>
+          <td>00 1111</td>
+          <td>10 0011</td>
+          <td>10 1011</td>
+          <td>00 0100</td>
+          <td>000011</td>
+          <td>000000</td>
+      </tr>
+      <tr>
+          <td>TargetReg</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>x</td>
+          <td>x</td>
+          <td>2(31)</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUSrc</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Mem2Reg</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>x</td>
+          <td>x</td>
+          <td>2(PC+8)</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>RegWrite</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>MemWrite</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>NPCop</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ExtOp</td>
+          <td>x</td>
+          <td>x</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>ALUop</td>
+          <td>add</td>
+          <td>sub</td>
+          <td>or</td>
+          <td>shift</td>
+          <td>add</td>
+          <td>add</td>
+          <td>sub</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>Tuse</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>x</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>TnewE</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>2</td>
+          <td>x</td>
+          <td>x</td>
+          <td>0</td>
+          <td>x</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="d级转发接收端选择器tr_grf_data">D级转发接收端选择器TR_GRF_Data
+</h2><p>分别实例化为tr_grf_d1，tr_grf_d2</p>
+<h3 id="端口说明-2">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>grfData[31:0]</td>
+          <td>I</td>
+          <td>寄存器数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataE[31:0]</td>
+          <td>I</td>
+          <td>E级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataM[31:0]</td>
+          <td>I</td>
+          <td>M级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataW[31:0]</td>
+          <td>I</td>
+          <td>W级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>grfOutTrOp[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>trData[31:0]</td>
+          <td>O</td>
+          <td>转发出去的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="寄存器堆grf">寄存器堆GRF
+</h2><h3 id="端口说明-3">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>WE</td>
+          <td>I</td>
+          <td>写使能信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>A1[4:0]</td>
+          <td>I</td>
+          <td>5位地址输入信号，指定寄存器位置，读出寄存器数据到RD1</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>A2[4:0]</td>
+          <td>I</td>
+          <td>5位地址输入信号，指定寄存器位置，读出寄存器数据到RD2</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>A3[4:0]</td>
+          <td>I</td>
+          <td>5位地址输入信号，指定寄存器位置，将WD数据写入到寄存器</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>WD [31:0]</td>
+          <td>I</td>
+          <td>32位写入数据内容</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>RD1 [31:0]</td>
+          <td>O</td>
+          <td>输出A1指定的寄存器的32位数据</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>RD2 [31:0]</td>
+          <td>O</td>
+          <td>输出A2指定的寄存器的32位数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-2">功能定义
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>同步复位</td>
+          <td>reset有效时同步复位所有寄存器</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>读出数据</td>
+          <td>将A1和A2地址对应的寄存器的值分别通过RD1和RD2读出</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>写入数据</td>
+          <td>当WE有效且clk上升沿来临时将WD数据写入到A3指定的寄存器</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="扩展单元ext">扩展单元EXT
+</h2><h3 id="端口说明-4">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>IN[15:0]</td>
+          <td>I</td>
+          <td>要扩展的16位立即数</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>ExtOp</td>
+          <td>I</td>
+          <td>扩展方式控制信号，高电平时进行符号拓展，低电平时进行零拓展</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>OUT[31:0]</td>
+          <td>O</td>
+          <td>扩展结果</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-3">功能定义
+</h3><p>根据ExtOp信号对立即数进行对应拓展</p>
+<h2 id="e级流水线寄存器">E级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效，输入为STALL</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>xxD</td>
+          <td>I</td>
+          <td>需要流水的D级数据</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxE</td>
+          <td>O</td>
+          <td>E级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="3-e级">3. E级
+</h1><p>省略E级控制器</p>
+<h2 id="e级转发接收端选择器tr_alu_src">E级转发接收端选择器TR_ALU_SRC
+</h2><p>分别实例化为tr_alu_src1，tr_alu_src2</p>
+<h3 id="端口说明-5">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>TR_GRF_RD[31:0]</td>
+          <td>I</td>
+          <td>寄存器数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataM[31:0]</td>
+          <td>I</td>
+          <td>M级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>trDataW[31:0]</td>
+          <td>I</td>
+          <td>W级发来的转发数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>trSel[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>aluSrc[31:0]</td>
+          <td>O</td>
+          <td>转发出去的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="寄存器写入地址选择器wr_mux">寄存器写入地址选择器WR_MUX
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>rt[4:0]</td>
+          <td>I</td>
+          <td>rt寄存器地址</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>rd[4:0]</td>
+          <td>I</td>
+          <td>rd寄存器地址</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>sel[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>writeRegAddr[4:0]</td>
+          <td>O</td>
+          <td>寄存器写入地址</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="alu输入源2选择器alusrc_mux">ALU输入源2选择器ALUSRC_MUX
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>rtData[31:0]</td>
+          <td>I</td>
+          <td>rt寄存器数据</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>immExtended32[31:0]</td>
+          <td>I</td>
+          <td>扩展后的立即数</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>aluSrcSel</td>
+          <td>I</td>
+          <td>选择器行为控制信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>src2[31:0]</td>
+          <td>O</td>
+          <td>alu输入源数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="算数运算单元alu">算数运算单元ALU
+</h2><h3 id="端口说明-6">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>src1[31:0]</td>
+          <td>I</td>
+          <td>ALU计算的第一个操作数</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>src2[31:0]</td>
+          <td>I</td>
+          <td>ALU计算的第二个操作数</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>aluop[3:0]</td>
+          <td>I</td>
+          <td>ALU功能选择信号，MIPS-C指令集需要9种运算</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>res [31:0]</td>
+          <td>O</td>
+          <td>输出计算结果</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-4">功能定义
+</h3><p>支持无符号加、无符号减、或、与、异或、src2左移16位，aluop见def.v</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>功能</th>
+          <th>ALUop</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>无符号加</td>
+          <td>00</td>
+          <td>res = src1 + src2</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>无符号减</td>
+          <td>01</td>
+          <td>res = src1 - src2</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>或</td>
+          <td>10</td>
+          <td>res = src1 | src2</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>src2左移16位</td>
+          <td>11</td>
+          <td>res = src2 &laquo; 0x10</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="乘除运算单元md_cal">乘除运算单元MD_CAL
+</h2><h3 id="端口说明-7">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td>复位信号</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>start</td>
+          <td>I</td>
+          <td>乘除运算开始控制信号</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>MDOp[3:0]</td>
+          <td>I</td>
+          <td>乘除行为控制信号</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>A[31:0]</td>
+          <td>I</td>
+          <td>第一个操作数</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>B[31:0]</td>
+          <td>I</td>
+          <td>第二个操作数</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>busy</td>
+          <td>O</td>
+          <td>模块忙信号</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>HIout[31:0]</td>
+          <td>O</td>
+          <td>供外界读取的HI寄存器数据</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>LOout[31:0]</td>
+          <td>O</td>
+          <td>供外界读取的LO寄存器数据</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>MDRead[31:0]</td>
+          <td>O</td>
+          <td>选择后输出的读出数据，受MDOp控制</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>Req</td>
+          <td>O</td>
+          <td>指示是否进入处理程序，如进入则乘除运算暂停</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-5">功能定义
+</h3><ul>
+<li>自 Start 信号有效后的第 1 个 clock 上升沿开始，乘除法部件开始执行运算，同时将 Busy 置位为 1。</li>
+<li>在运算结果保存到 HI 寄存器和 LO 寄存器后，Busy 位清除为 0。</li>
+<li>当 Busy 信号或 Start 信号为 1 时，<code>mult, multu, div, divu, mfhi, mflo, mthi, mtlo</code> 等乘除法相关的指令均被阻塞在 D 流水级。</li>
+<li>数据写入 HI 寄存器或 LO 寄存器，均只需 1 个时钟周期。</li>
+</ul>
+<h2 id="e级转发输出端选择器wrd_mux">E级转发输出端选择器WRD_MUX
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>aluOut[31:0]</td>
+          <td>I</td>
+          <td>alu运算结果</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>dmDataOut[31:0]</td>
+          <td>I</td>
+          <td>DM读出的数据</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>pc[31:0]</td>
+          <td>I</td>
+          <td>当前指令的地址</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>MDDataOut[31:0]</td>
+          <td>I</td>
+          <td>乘除模块读出数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>CP0Out[31:0]</td>
+          <td>I</td>
+          <td>CP0读出数据</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>trSel[1:0]</td>
+          <td>I</td>
+          <td>选择器行为控制信号，来源为mem2Reg</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>aluSrc[31:0]</td>
+          <td>O</td>
+          <td>转发出去的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="m级流水线寄存器">M级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>xxE</td>
+          <td>I</td>
+          <td>需要流水的E级数据</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxM</td>
+          <td>O</td>
+          <td>M级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="4-m级">4. M级
+</h1><p>省略控制器和转发输出的选择器</p>
+<h2 id="数据扩展模块load_ext">数据扩展模块LOAD_EXT
+</h2><h3 id="端口说明-8">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>low2Bit[1:0]</td>
+          <td>I</td>
+          <td>要取地址的低两位，来自ALU计算结果</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>dataIn[31:0]</td>
+          <td>I</td>
+          <td>输入的 32 位数据</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>opCode[5:0]</td>
+          <td>I</td>
+          <td>该阶段指令的opCode</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>dataOut[31:0]</td>
+          <td>O</td>
+          <td>扩展后的 32 位数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>AdEL_nonOF_M</td>
+          <td>O</td>
+          <td>..</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-6">功能定义
+</h3><p>对于 <code>lb</code>、<code>lh</code> 来说，我们需要额外增加一个数据扩展模块。这个模块把从数据存储器读出的数据做符号扩展。</p>
+<h2 id="字节使能模块byte_en">字节使能模块BYTE_EN
+</h2><h3 id="端口说明-9">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>low2Bit[1:0]</td>
+          <td>I</td>
+          <td>要取地址的低两位，来自ALU计算结果</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>RD2[31:0]</td>
+          <td>I</td>
+          <td>输入的 32 位寄存器数据</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>opCode[5:0]</td>
+          <td>I</td>
+          <td>该阶段指令的opCode</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>en</td>
+          <td>I</td>
+          <td>向内存写使能信号</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>dataToDM[31:0]</td>
+          <td>O</td>
+          <td>修改后的向内存写数据</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>byteen[3:0]</td>
+          <td>O</td>
+          <td>字节使能信号</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>AdES_nonOF_M</td>
+          <td>O</td>
+          <td>..</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-7">功能定义
+</h3><p>按字节来访问内存的使能信号和输入数据控制模块</p>
+<h2 id="w级流水线寄存器">W级流水线寄存器
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>reset</td>
+          <td>I</td>
+          <td><strong>同步</strong>复位信号，高电平有效</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>xxM</td>
+          <td>I</td>
+          <td>需要流水的M级数据</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>xxW</td>
+          <td>O</td>
+          <td>W级接收的流水数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="cp0协处理器">CP0协处理器
+</h2><h3 id="端口说明-10">端口说明
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>clk</td>
+          <td>I</td>
+          <td>时钟信号</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>reset</td>
+          <td>I</td>
+          <td>复位信号</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>en</td>
+          <td>I</td>
+          <td>CP0写使能信号</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>CP0Addr[4:0]</td>
+          <td>I</td>
+          <td>寄存器地址</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>CP0IN[31:0]</td>
+          <td>I</td>
+          <td>CP0写入数据</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>VPC[31:0]</td>
+          <td>I</td>
+          <td>受害PC</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>BDIn</td>
+          <td>I</td>
+          <td>是否为延迟槽指令</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>ExcCodeIn[4:0]</td>
+          <td>I</td>
+          <td>异常码</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>HWInt[5:0]</td>
+          <td>I</td>
+          <td>输入中断信号</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>EXLClr</td>
+          <td>I</td>
+          <td>复位EXL信号</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>CP0Out[31:0]</td>
+          <td>O</td>
+          <td>CP0读出数据</td>
+      </tr>
+      <tr>
+          <td>12</td>
+          <td>EPCOut[31:0]</td>
+          <td>O</td>
+          <td>EPC的值</td>
+      </tr>
+      <tr>
+          <td>13</td>
+          <td>Req</td>
+          <td>O</td>
+          <td>进入处理程序请求</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="功能定义-8">功能定义
+</h3><p>1、对异常进行配置
+2、记录异常信息</p>
+<h1 id="5-w级">5. W级
+</h1><p>省略控制器和转发输出的选择器</p>
+<h1 id="6-异常产生和传递">6. 异常产生和传递
+</h1><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="kt">wire</span> <span class="n">isStoreE</span><span class="p">,</span> <span class="n">isLoadE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="n">isOverFlowE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="n">AdES_OF_E</span> <span class="o">=</span> <span class="n">isStoreE</span> <span class="o">&amp;&amp;</span> <span class="n">isOverFlowE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="n">AdEL_OF_E</span> <span class="o">=</span> <span class="n">isLoadE</span> <span class="o">&amp;&amp;</span> <span class="n">isOverFlowE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="n">Ov_E</span> <span class="o">=</span> <span class="n">isOvInstrE</span> <span class="o">&amp;&amp;</span> <span class="n">isOverFlowE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeF</span> <span class="o">=</span> <span class="n">AdEL_F</span> <span class="o">?</span> <span class="mh">5</span><span class="mb">&#39;b00100</span> <span class="o">:</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">reg</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeTransD</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeD</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">ExcCodeTransD</span> <span class="o">!=</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">)</span> <span class="o">?</span> <span class="n">ExcCodeTransD</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">Syscall_D</span> <span class="o">?</span> <span class="mh">5</span><span class="mb">&#39;b01000</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">RI_D</span> <span class="o">?</span> <span class="mh">5</span><span class="mb">&#39;b01010</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">reg</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeTransE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeE</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">ExcCodeTransE</span> <span class="o">!=</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">)</span> <span class="o">?</span> <span class="n">ExcCodeTransE</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">Ov_E</span> <span class="o">?</span> <span class="mh">5</span><span class="mb">&#39;b01100</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">reg</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeTransM</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">wire</span> <span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">ExcCodeM</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">ExcCodeTransM</span> <span class="o">!=</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">)</span> <span class="o">?</span> <span class="n">ExcCodeTransM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">AdEL_M</span> <span class="o">?</span> <span class="mh">5</span><span class="mb">&#39;b00100</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">AdES_M</span> <span class="o">?</span> <span class="mh">5</span><span class="mb">&#39;b00101</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span> <span class="p">)</span> <span class="k">begin</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">reset</span> <span class="o">|</span> <span class="n">Req</span><span class="p">)</span> <span class="k">begin</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExcCodeTransD</span> <span class="o">&lt;=</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExcCodeTransE</span> <span class="o">&lt;=</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExcCodeTransM</span> <span class="o">&lt;=</span> <span class="mh">5</span><span class="mb">&#39;b10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">begin</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExcCodeTransD</span> <span class="o">&lt;=</span> <span class="n">ExcCodeF</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExcCodeTransE</span> <span class="o">&lt;=</span> <span class="n">ExcCodeD</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExcCodeTransM</span> <span class="o">&lt;=</span> <span class="n">ExcCodeE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="7-宏定义和阻塞转发单元">7. 宏定义和阻塞转发单元
+</h1><h2 id="宏定义">宏定义
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="c1">// for ALU
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define ALU_add 4&#39;b000
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_sub 4&#39;b001
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_or  4&#39;b010
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_and 4&#39;b011
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_xor 4&#39;b100
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_lui 4&#39;b101
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_slt 4&#39;b110
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define ALU_sltu 4&#39;b111
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for GRF&#39;s A3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define REG_T 2&#39;b00
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define REG_D 2&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define REG_31 2&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for GRF&#39;s WD
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define FromALURes 2&#39;b00
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define FromMem 2&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define FromPCAdd8 2&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define FromMDRes 2&#39;b11
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for NPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define NPC_PCPlus4 3&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_BEQ 3&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_Jimm26 3&#39;b11
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_JReg 3&#39;b100
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_blztal 3&#39;b101
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define NPC_BNE 3&#39;b110
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for TR
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define TR_FromE 2&#39;b11
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define TR_FromM 2&#39;b10
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define TR_FromW 2&#39;b01
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define TR_FromOrigin 2&#39;b00
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// for MD
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">`define MD_NOP 4&#39;b000
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_MULT 4&#39;b001
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_MULTU 4&#39;b010
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_DIV 4&#39;b011
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_DIVU 4&#39;b100
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_MTLO 4&#39;b101
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_MTHI 4&#39;b110
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_MFLO 4&#39;b111
+</span></span></span><span class="line"><span class="cl"><span class="cp">`define MD_MFHI 4&#39;b1000
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="阻塞转发单元">阻塞转发单元
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_grf_rd1_sel_d</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewE</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromE</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_grf_rd2_sel_d</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewE</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromE</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_alu_src1_sel_e</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">tr_alu_src2_sel_e</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewM</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromM</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">regWriteW</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">TnewW</span> <span class="o">==</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrE</span> <span class="o">==</span> <span class="n">writeRegAddrW</span><span class="p">)</span> <span class="o">?</span> <span class="no">`TR_FromW</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="no">`TR_FromOrigin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">STALL</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="p">((</span><span class="n">Tuse</span> <span class="o">&lt;</span> <span class="n">TnewE</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">regWriteE</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrE</span><span class="p">)))</span> <span class="o">||</span>
+</span></span><span class="line"><span class="cl"><span class="p">((</span><span class="n">Tuse</span> <span class="o">&lt;</span> <span class="n">TnewM</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rsAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">regWriteM</span> <span class="o">==</span> <span class="mh">1</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">!=</span> <span class="mh">0</span> <span class="o">&amp;&amp;</span> <span class="n">rtAddrD</span> <span class="o">==</span> <span class="n">writeRegAddrM</span><span class="p">)))</span> <span class="o">||</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="n">MDOpD</span> <span class="o">!=</span> <span class="no">`MD_NOP</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">startE</span> <span class="o">||</span> <span class="n">busy</span><span class="p">))</span> <span class="o">?</span> <span class="mh">1</span><span class="mb">&#39;b1</span> <span class="o">:</span> <span class="mh">2</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="hint">hint
+</h3><ol>
+<li>function</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">function</span> <span class="p">[</span><span class="n">data_type</span><span class="p">]</span> <span class="n">function_name</span> <span class="p">(</span><span class="n">input_declaration</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">function_body</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="k">return</span> <span class="n">statement</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="k">endfunction</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="k">module</span> <span class="n">fun_user</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">input</span> <span class="n">a</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">input</span> <span class="n">b</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">input</span> <span class="n">c</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">output</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">output</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d2</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">dataout</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">input</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">input</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">input</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dataout</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">endfunction</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">assign</span> <span class="n">d</span> <span class="o">=</span> <span class="n">dataout</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">endmodule</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="8-系统桥">8. 系统桥
+</h1><h2 id="端口说明-11">端口说明
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>序号</th>
+          <th>信号名称</th>
+          <th>方向</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>PrAddr[31:0]</td>
+          <td>I</td>
+          <td>要读写的地址</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>PrWD[31:0]</td>
+          <td>I</td>
+          <td>要写入的数据</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>PrWE</td>
+          <td>I</td>
+          <td>写使能</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>TC1_RD[31:0]</td>
+          <td>I</td>
+          <td>计时器1读出数据</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>TC2_RD[31:0]</td>
+          <td>I</td>
+          <td>计时器2读出数据</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>DM_RD[31:0]</td>
+          <td>I</td>
+          <td>DM读出数据</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>WE_TC1</td>
+          <td>O</td>
+          <td>TC1写使能</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>WE_TC2</td>
+          <td>O</td>
+          <td>TC2写使能</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>WE_DM</td>
+          <td>O</td>
+          <td>DM写使能</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>PrRD[31:0]</td>
+          <td>O</td>
+          <td>CPU读取的数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="功能定义-9">功能定义
+</h2><p>给 CPU 提供一种接口，使得 CPU 可以像读写普通存储器一样（即按地址读写）来读写复杂多变的外设。系统桥统一且简化了 CPU 的对外接口，CPU 不必为每种外设单独提供接口</p>
+<h1 id="二思考题">二、思考题
+</h1><blockquote>
+<p>请查阅相关资料，说明鼠标和键盘的输入信号是如何被 CPU 知晓的？</p></blockquote>
+<p>鼠标、键盘的输入信号传入控制器，通过驱动程序产生中断信号，中断CPU的运行，使得CPU进入中断状态执行中断处理程序处理读入的信息。</p>
+<blockquote>
+<p>请思考为什么我们的 CPU 处理中断异常必须是已经指定好的地址？如果你的 CPU 支持用户自定义入口地址，即处理中断异常的程序由用户提供，其还能提供我们所希望的功能吗？如果可以，请说明这样可能会出现什么问题？否则举例说明。（假设用户提供的中断处理程序合法）</p></blockquote>
+<p>我认为是可以自定义入口地址的，比如把入口地址的存储从常量改为寄存器，刚通电时初始化为默认值，而可以在后续进行修改。</p>
+<blockquote>
+<p>为何与外设通信需要 Bridge？</p></blockquote>
+<p>遵循高内聚低耦合的原则，CPU不必知道数据具体的来源，而只需要一个统一的接口进行读写；而各种外设遵循的协议可能不同，需要通过一系列的处理方法（如驱动程序），最后受Bridge处理，统一读写的逻辑。</p>
+<blockquote>
+<p>请阅读官方提供的定时器源代码，阐述两种中断模式的异同，并分别针对每一种模式绘制状态移图。</p></blockquote>
+<p>Mode 0：
+计时器倒数至0后停止计数，计数使能变为0，中断信号保持为1直到屏蔽中断/重新开始计数</p>
+<p><img src="/images/posts/CO/p7-1.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>Mode 1：</p>
+<p><img src="/images/posts/CO/p7-2.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<blockquote>
+<p>倘若中断信号流入的时候，在检测宏观 PC 的一级如果是一条空泡（你的 CPU 该级所有信息均为空）指令，此时会发生什么问题？在此例基础上请思考：在 P7 中，清空流水线产生的空泡指令应该保留原指令的哪些信息？</p></blockquote>
+<p>会导致宏观pc显示不正确（为0）；在清空流水线的时候，应该保留原指令的PC值信息。</p>
+<blockquote>
+<p>为什么 <code>jalr</code> 指令为什么不能写成 <code>jalr $31, $31</code>？</p></blockquote>
+<p>该指令的两个行为没有指定执行顺序，rs=rd条件下产生undefined behaviour；如果指令写成这样，且该指令的延迟槽指令出现了异常/需要响应中断，那么无法通过重新执行jalr来恢复，因为$31寄存器的值已经发生了改变，再次执行jalr指令时会跳转到不正确的PC地址。</p>
+<h1 id="三测试方案">三、测试方案
+</h1><ol>
+<li>使用课程组提供的测试数据和Mars进行对拍</li>
+<li>自行构造数据，和同学进行对拍</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/co-p6-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P6 - Verilog 流水线 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/co-p5-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P5 - Verilog 流水线 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/co-p4-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P4 - Verilog 单周期 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/co-p3-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CO | P3 - Logisim 单周期 CPU 设计文档</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Taichuan Li
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.d9dec133efdf60a3628a485d38b69336769aaba023a8725f406793e47c75858f.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="面向对象第一单元作业总结博客">
+<meta name="keywords" content="OO"><title>OO | Unit 1</title>
+
+<link rel='canonical' href='http://localhost:1313/p/oo-u1-doc/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="OO | Unit 1">
+<meta property='og:description' content="面向对象第一单元作业总结博客">
+<meta property='og:url' content='http://localhost:1313/p/oo-u1-doc/'>
+<meta property='og:site_name' content='v1tamin&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-09-01T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-09-01T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="OO | Unit 1">
+<meta name="twitter:description" content="面向对象第一单元作业总结博客">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/avatar_hu_aefa2326ce591fb8.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤠</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">v1tamin&#39;s Blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/MercuryRecords'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一整体设计的量化分析">一、整体设计的量化分析</a>
+      <ol>
+        <li><a href="#1类图和优缺点分析">1、类图和优缺点分析</a></li>
+        <li><a href="#2代码规模分析">2、代码规模分析</a></li>
+        <li><a href="#3代码复杂度分析">3、代码复杂度分析</a></li>
+      </ol>
+    </li>
+    <li><a href="#二从迭代看架构">二、从迭代看架构</a>
+      <ol>
+        <li><a href="#1第一次作业架构">1、第一次作业架构</a></li>
+        <li><a href="#2第二三次作业架构">2、第二、三次作业架构</a>
+          <ol>
+            <li><a href="#重构后架构设计">重构后架构设计</a></li>
+            <li><a href="#重构后实现要点">重构后实现要点</a></li>
+          </ol>
+        </li>
+        <li><a href="#3重构体验">3、重构体验</a></li>
+        <li><a href="#4迭代场景畅想">4、迭代场景畅想</a></li>
+      </ol>
+    </li>
+    <li><a href="#三bug分析">三、bug分析</a></li>
+    <li><a href="#四hack分析">四、hack分析</a>
+      <ol>
+        <li><a href="#1评测机">1、评测机</a></li>
+        <li><a href="#2手动测试">2、手动测试</a></li>
+        <li><a href="#3结合实际情况的分析">3、结合实际情况的分析</a></li>
+      </ol>
+    </li>
+    <li><a href="#五优化分析">五、优化分析</a>
+      <ol>
+        <li><a href="#1优化内容">1、优化内容</a></li>
+        <li><a href="#2优化分析">2、优化分析</a></li>
+      </ol>
+    </li>
+    <li><a href="#六心得体会">六、心得体会</a></li>
+    <li><a href="#七方向建议">七、方向建议</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/oo/" >
+                OO
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/oo-u1-doc/">OO | Unit 1</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            面向对象第一单元作业总结博客
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 01, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 15 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="第一单元博客">第一单元博客
+</h1><h2 id="一整体设计的量化分析">一、整体设计的量化分析
+</h2><h3 id="1类图和优缺点分析">1、类图和优缺点分析
+</h3><div align="center">
+<img src="/images/posts/OO/unit1-uml.png">
+</div>
+<ul>
+<li>入口类：<code>MainClass</code></li>
+<li>计算类：<code>Poly</code>、<code>Mono</code></li>
+<li>解析主体类：<code>Lexer</code>、<code>Parser</code></li>
+<li>工具类：处理自定义函数定义和调用的 <code>FuncExpander</code>、从字符串分析成分并用于优化的 <code>Recognizer</code></li>
+<li>文法成员类：<code>Expr</code>、<code>Term</code>、<code>Variable</code>、<code>Number</code>，没有指数函数是因为偷懒直接调用计算类构建了</li>
+</ul>
+<p>优点：层次清晰、方法简明，使用解析主体类和文法成员类配合完成递归下降解析，计算类负责存储输出表达式的组分和边解析边化简
+缺点：两个计算类耦合程度较高（见后续分析），可以单独提取一个计算器功能的类；对包的理解不够深刻，基本是看心情和直觉决定放在 <code>expr</code> 文件夹内与否</p>
+<h3 id="2代码规模分析">2、代码规模分析
+</h3><p>使用 <code>Statistic</code> 协助分析</p>
+<div align="center">
+<img src="/images/posts/OO/unit1-codelines.png">
+</div>
+<p>可以发现文法成员类和入口类的代码行数都很少，这是因为他们的属性、方法个数都很少，方法规模基本转移到调用的类中了</p>
+<ul>
+<li><code>Parser</code> 类实现了使用循环语句解析表达式层次、使用分支语句覆盖多种因子类别的功能；</li>
+<li><code>Poly</code> 类和 <code>Mono</code> 类需要实现取负、加法、乘法、乘方、合并等计算、满足数据结构要求而重写的 <code>equals</code> 和 <code>hashCode</code> 方法、用于表达式输出而重写的 <code>toString</code> 方法、针对业务需求写了多种构造方法等。</li>
+</ul>
+<h3 id="3代码复杂度分析">3、代码复杂度分析
+</h3><p>使用 <code>Metrics</code> 协助分析，包括分析各指标中前6复杂的典型方法</p>
+<ol>
+<li><strong>认知复杂度 <code>CogC</code></strong>：简单来说就是衡量方法的理解难度，与控制流结构的复杂程度有关，注意与圈复杂度区分</li>
+</ol>
+<div align="center">
+<img src="/images/posts/OO/unit1-cogc.png">
+</div>
+<ul>
+<li>表达式输出优化相关：<code>Mono.toString</code>、<code>Poly.asString</code>、<code>Recognizer.isExponent</code>、<code>Mono.canBeTeared</code> 都属于输出化简后表达式导致的理解难度，要在考虑文法的同时优化总长度并进行输出，势必要引入一些特殊规则的判断，如特定的0能不能不输出、特定的系数1能不能不输出、指数函数能否变化为带幂次的形式而减少括号、输出表达式的时候有没有系数为正的单项式可以提前输出，个人认为在保证正确性和性能分的前提下增加认知复杂度是情有可原的；</li>
+<li>计算相关 <code>Poly.powerTrans</code>：为了统一形式和实现“边解析边化简”，我选择实现这个方法以计算对应多项式的幂次结果。方法中包含了幂次为0的预剪枝、主体进行指定次数（小于等于8次）的乘法，故包含了3层循环。这里可以提取一个乘法方法；</li>
+<li>解析相关 <code>Parser.parseFactor</code>：由因子多样性导致有多个 <code>if-else</code> 分支。</li>
+</ul>
+<ol start="2">
+<li><strong>基本复杂度 <code>ev(G)</code></strong>：衡量程序非结构化程度</li>
+</ol>
+<div align="center">
+<img src="/images/posts/OO/unit1-evg.png">
+</div>
+<ul>
+<li>字符串相关：后四种都与字符串逐个解析有关，字符串肯定会有很多判断语句不可避免；</li>
+<li><code>Mono.equals</code>：重写中涉及了较多预剪枝，尽量不碰到指数函数因子部分的相等判断，个人认为是值得的。</li>
+</ul>
+<ol start="3">
+<li><strong>模块设计复杂度 <code>iv(G)</code> 和圈复杂度 <code>v(G)</code></strong>：主体都是圈复杂度中对于独立路径条数的计算，结果差不多故放在一起</li>
+</ol>
+<div align="center">
+<img src="/images/posts/OO/unit1-ivg.png">
+</div>
+<ul>
+<li>这些方法在上文已经分析过了，不再赘述</li>
+</ul>
+<ol start="4">
+<li><strong>类复杂度分析</strong>：</li>
+</ol>
+<div align="center">
+<img src="/images/posts/OO/unit1-classmetrics.png">
+</div>
+<ul>
+<li>加权复杂度较高的 <code>Poly</code> 类和 <code>Mono</code> 类：在代码规模分析中其实可以预测到这里表现较差了，优化空间个人认为只剩下把计算相关的功能单独提一个类出来，但这并不能改良计算本身的复杂性；</li>
+<li>平均操作复杂度较高的 <code>Recognizer</code>类：这个类表现较差倒是意料之外情理之中，我猜主要是由于依据文法规则逐字解析字符串和 <code>Recognizer.isNumber</code> 方法受类中另外两个方法调用导致。</li>
+</ul>
+<h2 id="二从迭代看架构">二、从迭代看架构
+</h2><h3 id="1第一次作业架构">1、第一次作业架构
+</h3><p>问题重述：读入一个单变量表达式，输出变形后不含括号的等价表达式，在保证正确的前提下使得输出表达式尽量短。</p>
+<ol>
+<li><strong>预处理方法</strong>：经过分析发现去除空白字符是性价比最高的预处理方法，在 <code>Lexer</code> 的构造方法中直接实现了；讨论和观察中注意到大部分同学还对正负号进行了预处理，但我认为遵循形式化表述并在适当的地方使用 <code>parseSign</code> 方法即可。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Parser.java</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 使用true代表正号，false代表负号</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Boolean</span><span class="w"> </span><span class="nf">parseSign</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lexer</span><span class="p">.</span><span class="na">peek</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;+&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">lexer</span><span class="p">.</span><span class="na">next</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lexer</span><span class="p">.</span><span class="na">peek</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;-&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">lexer</span><span class="p">.</span><span class="na">next</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li><strong>表达式的读入和解析：</strong> 从形式化表述可以发现表达式具有明显的树状结构，结合前置知识和对应练习自然地想到利用递归下降的思想进行解析，因此程序复用了练习中 advance 的递归下降结构。在递归下降的解析过程中，重要的是改写指导书给出的形式化表述，比如可以写成右递归或者带循环的形式。笔者采用了带循环的形式，改写如下（不考虑空白项）：
+<ul>
+<li>表达式：<code>[加减] 项 {加减 项}</code></li>
+<li>项：<code>[加减] 因子 {'*' 因子}</code></li>
+<li>因子：<code>'x' [空白项 指数] | [加减] 允许前导零的整数 |  '(' 表达式 ')' [空白项 指数]</code></li>
+<li>&hellip;
+由此引出 <code>Parser</code> 类中的五个用于解析组分的方法：<code>parseExpr()</code> 、 <code>parseTerm()</code> 、 <code>parseFactor()</code> 、 <code>parseSign()</code> 、 <code>parseExponent()</code> 。</li>
+</ul>
+</li>
+<li><strong>边建树边合并：</strong> 这里其实也呼应了上一段中使用 <code>HashMap</code> 来表示语法树的用意，我在完成项目的途中始终想的是树的结构，但实现看不到典型的结点等概念，因为在各对象构建语法树的过程中都可以将语法树保持为深度为 1 的多项式树。这个想法只需要 <code>Expr</code> 和 <code>Term</code> 类中的方法实现边建树边合并，即 <code>Expr</code> 新增项时实现加法， <code>Term</code> 新增因子时实现乘法。</li>
+<li><strong>各组分的存储结构：</strong> 考虑到使用递归下降对表达式进行解析，解析过程中的表达式、项、因子其实都是整棵抽象语法树的子树，所以对于各个语法对象其实都可以使用一个树结构进行存储。具体到表达式这个问题上，通过分析一定是叶子节点的变量因子和常数因子可以发现，第一次作业中的表达式总等价于一个多项式，这也是我们想要的 <strong>不含括号的等价表达式</strong> 。要表示一个多项式，其实只需要使用 <code>HashMap</code> 来存储次数和系数的键值对，就可以利用其一直完成到最后的表达式输出。所以可以构建一个接口 <code>SynComp</code> （文法组分），其中提供 <code>getPoly()</code> 等方法。</li>
+</ol>
+<p>可以看到这里的<strong>4. 组分存储结构</strong>导致为了hw2势必要进行重构，放一个生前的类图吧</p>
+<div align="center">
+<img src="/images/posts/OO/unit1-hw1.png">
+</div>
+<p>这次作业（hw1）的架构可以看出，每个 <code>Factor</code> 的实现中都有一个 <code>poly</code> 属性，实现对应组分的存储，仅考虑了幂函数的次数和系数，这样的可拓展性是相当差的；而且将 <code>powerTrans</code> 作为接口中的方法要求，实际上这个方法只有 <code>Expr</code> 一个类有用法，违反了SOLID原则中的<strong>接口隔离原则</strong>。</p>
+<h3 id="2第二三次作业架构">2、第二、三次作业架构
+</h3><h4 id="重构后架构设计">重构后架构设计
+</h4><ol>
+<li><strong>哎，重构：</strong> 相比hw1增加了指数函数和自定义函数的部分，个人认为指数函数提升了对自定义类的要求，毕竟如果hw1像苯人一样</li>
+</ol>
+<blockquote>
+<p>使用 <code>HashMap</code> 来存储次数和系数的键值对</p></blockquote>
+<p>而不考虑可拓展性的话，就要付出惨痛的重构代价。就本次作业而言，一个必然满足正确性要求的输出形式为 $ Q(x)=\sum^{i} a_i*x^{b_i}*exp(c_i) $ 、$ c_i=Q(x&rsquo;) $。个人也建议从输出形式倒推自定义类的设计，这样不仅利于最后的输出，也利于在使用递归下降等方法解析表达式的时候进行<strong>边建树边合并</strong>。言归正传，本次作业我设计了 <code>Mono</code> 类和 <code>Poly</code> 类作为“基类”，原有的 语法成分类 利用这两个类进行计算和合并等操作。</p>
+<ol>
+<li>
+<p><strong>指数函数：</strong> 基于 <code>Mono</code> 类，要实现指数函数的解析、运算和存储都不算难事。</p>
+</li>
+<li>
+<p><strong>自定义函数：</strong></p>
+<ul>
+<li>已有的架构无法<strong>完全</strong>处理自定义函数，势必是要创建一个新的类进行解析的。这个类要实现对自定义函数声明/定义的解析，包括<strong>存储形参、函数表达式</strong>。</li>
+<li>为了保证逻辑的统一性，解析自定义函数的方法应该被解析因子的方法调用，同样地返回一个 <code>Factor</code> 或 <code>Poly</code> 类的值。</li>
+<li>如果能保证处理好本次作业除自定义函数的部分，一个简单的处理自定义函数调用的方法是<strong>将函数表达式中的形参换为实参，再调用 <code>Parser</code> 类进行解析</strong>。这样能提高代码的复用率，满足上述的架构要求，耦合度也相对较低。</li>
+</ul>
+</li>
+<li>
+<p><strong>微分因子：</strong> 对多项式 <code>Poly</code> 类使用加法法则，对扩展单项式 <code>Mono</code> 类使用乘法法则即可。</p>
+</li>
+</ol>
+<h4 id="重构后实现要点">重构后实现要点
+</h4><ol>
+<li>
+<p><strong>自定义类的深克隆问题：</strong> 注意到在表达式$Q(x)=\sum^{i} a_i*x^{b_i}*exp(c_i)$ 中， $c_{i}$ 代表的是因子，在进行所有必要的展开之后，它最坏是一个表达式。因此你可能会在 <code>Poly</code> 类中使用容器存储 <code>Mono</code> 对象，又在 <code>Mono</code> 类中使用 <code>Poly</code> 对象表示指数函数的指数。务必注意检查是否使用了<strong>深克隆</strong>而非<strong>浅克隆</strong>，因为在解析和化简的过程中难免对这些对象进行运算，对克隆的疏忽容易导致<strong>灾难性的后果</strong>。</p>
+</li>
+<li>
+<p><strong>合并同类项的双刃剑——重写equals与hashcode方法：</strong> 要进行同类项的合并，我们需要比较 <code>Mono</code> 对象的 x 幂次和指数内容，一个直接的想法是<strong>重写equals与hashcode方法</strong>从而能够直接比较两个对象是否相等。需要注意的是考虑到上一个问题中涉及的 <code>Mono</code> 类和 <code>Poly</code> 类的嵌套，这个地方的重写需要充分的考虑，在 <code>Poly</code> 类中利用 <code>HashMap</code> 结构完成各 <code>Mono</code> 对象的相等判断，在 <code>Mono</code> 类中注意对指数函数中指数项的相等判断。</p>
+</li>
+<li>
+<p><strong>指数函数的输出：</strong> 注意指数函数的指数是<strong>因子</strong>，在输出的时候应该呈现因子，<strong>不能直接输出表达式</strong>；在化简时也可以考虑将表达式因子尽可能降到常数因子和幂函数等形式，有助于提高性能分。</p>
+</li>
+<li>
+<p><strong>自定义函数相关：</strong> 形参替换的时候如果不作处理，容易改变<code>exp</code>中的<code>x</code>，已有同学在讨论区提出解决方法；将实参代入形参的时候应该<strong>使用括号括起实参</strong>，否则可能导致表达式的运算优先级发生改变。</p>
+</li>
+</ol>
+<h3 id="3重构体验">3、重构体验
+</h3><p>几乎是在一看到第二次作业要求时就意识到了重构的必要性，其实主要的时间都在思考能不能避免 <code>Mono</code> 类和 <code>Poly</code> 类的反复嵌套，最终还是接受了这种实现。主要的心路历程是空想时的痛苦和怀疑、战战兢兢地写代码害怕无法实现、和最后发现“诶，好像没事”。虽然反复嵌套比较难看、耦合程度较高，但是在题目数据范围内是比较快速有效的实现了。</p>
+<h3 id="4迭代场景畅想">4、迭代场景畅想
+</h3><ul>
+<li>增加新的函数因子：比如类似往届引入三角函数，这个正确性处理上和指数函数思路一样，为 <code>Mono</code> 类新加属性即可，并且以此为基础审阅所有相关计算方法是否正确</li>
+<li>增加变量类型：如果从单变量扩展到多变量，也是需要增加新属性，检查相关方法</li>
+<li>增加变换方法：如增加积分，新增方法返回指定参数下的计算结果即可，虽然能不能算出来是另外一个问题了</li>
+</ul>
+<p>整体来说，只要不跳出表达式化简的这个大目标，现有的架构对新需求的可扩展性表现较好，毕竟我处理第三次作业只需要更新不到50行代码。</p>
+<h2 id="三bug分析">三、bug分析
+</h2><p>就课程组评测而言，印象中只在hw2的重构过程中提交的一次中测发现了bug，主要是因为<em>重构写的急</em>导致字符串替换时出现的问题（将<em>exp</em>替换为<em>E</em>后忘记替换回来），发现后很快解决了。</p>
+<p>查看Git日志后发现，hw1主要是对样例debug就结束了，因为没有别的方法找bug所以搓了<strong>评测机</strong>，开启了unit1的不归路（？</p>
+<p>hw2经历了大重构，多数的bug也在这里发现，从Git日志中可以看出主要的bug似乎还是从自己的评测机中测出来的，包括没有遵循文法导致exp内部的表达式因子没有加括号等等</p>
+<p>如果把开发过程中发现的bug也算入在内的话，我认为得通过<strong>开始写代码前写个todolist</strong>来解决，这样可以避免陷入局部忘记整体。</p>
+<p>互测阶段有一个自己测出自己的bug，当真有点汗流浃背：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">3
+</span></span><span class="line"><span class="cl">g(z)=exp(exp(exp(exp(z))))
+</span></span><span class="line"><span class="cl">f(y)=exp(exp(exp(exp(g(y)))))
+</span></span><span class="line"><span class="cl">h(x)=exp(exp(exp(exp(f(x)))))
+</span></span><span class="line"><span class="cl">h(h(h(exp(exp(exp(exp(x^8)))))))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个形式的数据会导致我和互测房间中的多人产生 <code>TLE</code>，我使用了 <code>JProfiler</code> 进行性能分析，发现是在输出过程中递归调用了太多次的 <code>toString</code> 方法，随着 <code>exp</code> 的嵌套运行时间应该是<strong>指数级</strong>提升。经过修改一些代码语句来规避对 <code>toString</code> 的调用即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Poly.java</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">asString</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">asFactor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">sb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">boolean</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Mono</span><span class="w"> </span><span class="n">firstMono</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firstPositive</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Modified here</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// if (firstMono != null &amp;&amp; !firstMono.toString().isEmpty()) { </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">firstMono</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">firstMono</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Mono</span><span class="w"> </span><span class="n">mono</span><span class="p">:</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">mos</span><span class="p">.</span><span class="na">keySet</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// Modified here</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// if (mono.toString().isEmpty() || mono.equals(firstMono)) {</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mono</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">firstMono</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">mono</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">continue</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">first</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">mono</span><span class="p">.</span><span class="na">isNegative</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;+&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">mono</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sb</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;0&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">asFactor</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">canBeSimplified</span><span class="p">(</span><span class="n">sb</span><span class="p">.</span><span class="na">toString</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">sb</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;(&#39;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="sc">&#39;)&#39;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sb</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>两处修改分别为<strong>避免冗余的并判断</strong>和<strong>提前短路或判断</strong>，前者似乎不是什么可以复用的设计技巧，毕竟我更偏向于保留一些冗余的保险设计；后者倒是在发现时可以调整一下，毕竟不影响正确性。</p>
+<p>代码行数来讲两者无差异，圈复杂度倒是由于if条件的简化下降了<strong>1</strong>，这应该属于通过减少无效判断来降低复杂度。此外，要降低方法的复杂度，主要是要遵守单一职责原则、对函数进行拆分和重构。通过查阅网上的资料，我发现还有一些常用的方法可以降低方法的复杂度，包括使用卫语句替换嵌套 <code>if-else</code> 语句、减少 <code>return</code> 语句的使用、减少使用控制标记变量等方法，但我认为重要的是在方法复杂度和方法功能中进行取舍，要避免写出又臭又长的代码，也不能为了追求低复杂度而过分拆分方法。</p>
+<h2 id="四hack分析">四、hack分析
+</h2><p>测试策略：自动手动相结合。</p>
+<h3 id="1评测机">1、评测机
+</h3><p><a class="link" href="https://github.com/MercuryRecords/BUAA_OO_2024"  target="_blank" rel="noopener"
+    >开源链接</a></p>
+<ol>
+<li>首先是hw1借助学长提供的评测机架构，利用python的<code>sympy</code>等库，基本实现了自动化生成数据、正确性判定和hack数据导出，也实现了cost计算。</li>
+<li>hw2时间紧张，但还是实现了指数函数和自定义函数的生成，判断正确性方面考虑到sympy库的性能有点差，最终使用了<strong>对拍</strong>的方法，事实证明面对OO互测这样的场景对拍是一个简单有效的方法，就算在互测前也可以和友人对拍；而且sympy只能实现对答案正确性的部分判断，即它能接受<code>exp(-x)</code>等不符合文法的化简结果，面对这种情况我的解决方法是确保自己的程序（或者某个别人的程序）对文法的读取非常严格，将其作为<strong>文法检查器</strong>，对别人输出的表达式进行读入解析再输出，这种做法也相当有效。</li>
+<li>评测机<strong>加入了对 <code>TLE</code> 的考虑</strong>，其实在hw2已经出现了有几组数据运行时间过长的情况，但考虑到生成输入、正确性判断使用了sympy等因素，我并没有深究其中原因。在hw3中尝试利用生成概率控制表达式的复杂度，并加入了程序只能运行10s的限制，由此提供了对TLE的支持。</li>
+</ol>
+<h3 id="2手动测试">2、手动测试
+</h3><p>手动测试的流程发生在自动评测之后，毕竟这就是自动评测机的意义。对于已经有报错数据的程序，我会尝试查找它们出错的原因，并根据代码情况考虑是否会有相关的bug产生；对于没有报错数据的程序，我会更细致地阅读它们的内容，综合一次作业中的典型错误进行排查。</p>
+<h3 id="3结合实际情况的分析">3、结合实际情况的分析
+</h3><ul>
+<li><strong>hw1：</strong> 相当和平，我的房间没人中刀，这个时候怀疑过评测机是不是写错了</li>
+<li><strong>hw2：</strong> 惨烈的战役，自动化测试中发现有的程序输出了类似 <code>exp(-x)</code> 的内容，在手动构造测试样例的时候发现了还有同学会将负数系数作为幂次提出，这也违反了文法的要求，所以战果是产生了一刀四爆 =)；此外自动测试还发现一个同学的报错有 <code>substring</code> 访问越界和 <code>BigInteger divide by zero</code> 的问题，第一个问题如果别的程序有应该早能自动测试查出来了，而第二个问题是因为该同学的程序实现了除法，似乎是为了优化相关的工作，而其他同学基本没有考虑到使用公因子提取进行优化，故这个问题其他同学也不存在。这次互测是<strong>究极大乱斗</strong>，我hack出的每个bug应该都和别的同学共享了战果，所以虽然刀中了5个人应该得分也不算高。</li>
+<li><strong>hw3：</strong> 一家独大的战役，这次使用评测机测出了2个 <code>TLE</code>、一个 <code>StackOverflowError</code>、一个 <code>WA</code>。大家的 <code>TLE</code>基本都是架构中反复调用次数太多导致的，<code>StackOverflowError</code> 是反复调用导致超时之前先爆栈了，很难说谁的重构难度比较大。<code>WA</code> 的同学似乎是在同类项合并上栽了跟头，居然在hw2中没有被测出来（）本来做到这里感觉已经无可hack了，但在友人的提示下发现<strong>多层嵌套的 <code>exp()</code> 也能导致超时</strong>（之前评测机测出的 <code>TLE</code> 是幂次运算时间太久导致的），这个样例让我的程序也被攻破，只能说还好同房没有发现这个数据。其实我在hw2便注意到了 <code>exp</code> 对cost的影响很小，但当时并没有想到借此构造极端数据，因为 <code>exp()</code> 本身就有5个字符之长了，而且hw2中函数不支持嵌套；hw3中<strong>开放了函数嵌套</strong>提供了对架构简洁性进行测试的可能，导致可以在相当符合规则的程度上进行hack。通过构造一个极端数据点，本次互测又成功多刀一人。这次互测刀中了5个人，独享了4个人的经验=)。</li>
+</ul>
+<h2 id="五优化分析">五、优化分析
+</h2><h3 id="1优化内容">1、优化内容
+</h3><p><code>Mono</code> 层：</p>
+<ul>
+<li>如果系数为0返回空字符串，让 <code>Poly</code> 层决定接下来的处理。</li>
+<li>系数不为0时考虑按照 <strong>系数 - 带次数的x - 指数函数</strong> 的顺序进行输出。</li>
+<li>如果次数不为0/指数函数部分存在 且 系数绝对值为1，可以省略系数。 e.g. <code>1*x -&gt; x</code></li>
+<li>如果次数为0不输出 <code>x</code> 部分；如果次数为1不输出 <code>^n</code> 部分。</li>
+<li>对指数函数部分，利用子方法 <code>canBeTeared</code> 来判断能否将指数函数进一步化简。 e.g. <code>exp((3*x^4)) -&gt; exp(x^4)^3</code></li>
+<li>利用标识变量决定要不要输出 <code>*</code> 来连接各部分。</li>
+</ul>
+<p><code>Poly</code>层：</p>
+<ul>
+<li>正项提前输出。 e.g. <code>-x+1 -&gt; 1-x</code></li>
+<li>确保各单项式之间仅用一个正号或符号连接。</li>
+<li>如果作为因子输出，利用子方法 <code>canBeSimplified</code> 来判断是否要作为表达式因子而加括号。e.g. <code>exp((3)) -&gt; exp(3)</code></li>
+</ul>
+<p>考虑到个人能力、开发耗时和程序耗时，我没有选择对 <code>Poly</code>层进行更多的化简，包括提取公因子、拆分exp等方法。</p>
+<h3 id="2优化分析">2、优化分析
+</h3><p>感觉这里有点像开放封闭原则，即就算要优化输出表达式的长度，也不应该影响输出表达式的正确性。我的代码保持了简洁性和正确性，如果要按上文进行提取公因子、拆分exp的优化，确实可能对这两者产生危害，所以不妨在要进行进一步优化的前提下思考解决方案。这里应该<strong>贯彻开放封闭原则</strong>，保护已经有简洁性和正确性的代码，新开方法进行优化。当然这一定程度上会和程序耗时产生冲突。
+比如，公因子提取肯定是要发生在一次输出之前的，可以考虑对 <code>Poly</code> 类新增边合并边计算gcd的功能，让字符串输出之前可以通过访问属性来优化输出，这也能降低程序的耦合程度；关于如何拆分exp也应该随着对象内容的更新而实时更新，让 <code>toString</code> 方法直接调用而非计算。</p>
+<h2 id="六心得体会">六、心得体会
+</h2><ul>
+<li>及时拆分方法，常常跳出局部看全局。</li>
+<li>Unit1整体对层次化的要求感觉跟OOPre差不多，但毕竟经历了OOPre的磨练，感觉Unit1整体的代码分布很和谐，看着重构完不错的架构感觉很爽，当然重构是痛苦的。</li>
+<li>前两周OO花的时间实在是太多了，很奇怪的难度曲线，我是完全独立完成的hw1，很难想象一个初学者如何能在不参考学长博客的情况下写出高拓展性的架构，hw2发现我所想和学长架构差不多的时候是感到庆幸的。</li>
+<li>多多考虑可拓展性，我的程序在第一次作业支持了嵌套括号，第二次作业支持了自定义函数嵌套，多做些不过分的考虑。</li>
+<li>伟大的评测机，写评测机的过程也对作业本身有加深理解的作用。感谢学长提供的第一次作业评测机架构，和从hw2开始和我一起开发评测机的yez同学。希望大家多多开源评测机交流！</li>
+</ul>
+<h2 id="七方向建议">七、方向建议
+</h2><ul>
+<li>第一单元的性能分可以考虑计算运行时长等，占比较小，希望多测几次预防服务器波动</li>
+<li>缩短互测hack间隔，要拿满基础分至少要花2.5h（A房）</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/oo-u4-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OO | Unit 4</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/oo-u3-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OO | Unit 3</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/oo-u2-doc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">OO | Unit 2</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Taichuan Li
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.d9dec133efdf60a3628a485d38b69336769aaba023a8725f406793e47c75858f.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
